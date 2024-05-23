@@ -28,9 +28,9 @@ class AlgorithmsAssignment : Game
 
 	//common settings
 	private const int SCALE = 20;				//TODO: experiment with changing this
-	private const int MIN_ROOM_SIZE = 7;		//TODO: use this setting in your dungeon generator
+	private const int MIN_ROOM_SIZE = 10;		//TODO: use this setting in your dungeon generator
 
-	public AlgorithmsAssignment() : base(800, 600, false, true, -1, -1, false)
+	public AlgorithmsAssignment() : base(1920, 1080, false, true, -1, -1, false)
 	{
 		Init();
 	}
@@ -92,8 +92,8 @@ class AlgorithmsAssignment : Game
         //TODO: Study the SampleDungeon class and try it out below
         //TODO: Comment out SampleDungeon below, implement a SufficientDungeon class and uncomment it below
 
-        _dungeon = new SampleDungeon(size);
-        //_dungeon = new SufficientDungeon(size);
+        //_dungeon = new SampleDungeon(size);
+        _dungeon = new SufficientDungeon(size);
 
         /////////////////////////////////
         //Assignment 1.2 Good (optional)
