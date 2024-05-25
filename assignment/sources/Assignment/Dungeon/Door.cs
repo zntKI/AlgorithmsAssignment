@@ -22,8 +22,9 @@ class Door
 		location = pLocation;
 	}
 
-	//TODO: Implement a toString method for debugging
-	//Return information about the type of object and it's data
-	//eg Door: (x,y)
+    public override string ToString()
+    {
+		return $"Door: (x: {location.X}, y: {location.Y})";
+    }
 }
 

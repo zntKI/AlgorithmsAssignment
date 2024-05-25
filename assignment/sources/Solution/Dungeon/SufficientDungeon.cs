@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 class SufficientDungeon : Dungeon
@@ -22,6 +23,7 @@ class SufficientDungeon : Dungeon
     protected override void generate(int pMinimumRoomSize)
     {
         GenerateRooms(pMinimumRoomSize);
+        GenerateDoors();
     }
 
     void GenerateRooms(int pMinimumRoomSize)
@@ -136,5 +138,89 @@ class SufficientDungeon : Dungeon
                 ? new Room(new Rectangle(room.area.X + room1Size - 1, room.area.Y, room2Size, room.area.Height))
                 : new Room(new Rectangle(room.area.X, room.area.Y + room1Size - 1, room.area.Width, room2Size))
         };
+    }
+
+    void GenerateDoors()
+    {
+        foreach (var room in rooms)
+        {
+            foreach (var otherRoom in rooms)
+            {
+                if (otherRoom == room)
+                    continue;
+
+                bool doorExists = false;
+                foreach (var doorCheck in doors)
+                {
+                    if ((doorCheck.roomA == room && doorCheck.roomB == otherRoom)
+                        || (doorCheck.roomA == otherRoom && doorCheck.roomB == room))
+                    {
+                        doorExists = true;
+                        break;
+                    }
+                }
+                if (doorExists)
+                    continue;
+
+                //Check if the otherRoom is neighbouring to room
+                int difX = Mathf.Abs(room.area.X - otherRoom.area.X);
+                int difY = Mathf.Abs(room.area.Y - otherRoom.area.Y);
+                bool isNeighbouringX =
+                    (difX == room.area.Width / 2 + otherRoom.area.Width / 2 - 1 || difX == room.area.Width / 2 + otherRoom.area.Width / 2) //Due to overlapping
+                    && difY < (room.area.Height / 2 + otherRoom.area.Height / 2) - 3; //In order to prevent doors spawning on corners or borders
+                bool isNeighbouringY =
+                    (difY == room.area.Height / 2 + otherRoom.area.Height / 2 - 1 || difY == room.area.Height / 2 + otherRoom.area.Height / 2) //Due to overlapping
+                    && difX < (room.area.Width / 2 + otherRoom.area.Width / 2) - 3; //In order to prevent doors spawning on corners or borders
+
+                //Skip room if not neighbouring
+                if (!isNeighbouringX && !isNeighbouringY)
+                    continue;
+
+                int overlapStart = 0;
+                int overlapEnd = 0;
+                int doorX = 0;
+                int doorY = 0;
+
+                //otherRoom is to the right of room
+                if (room.area.X + room.area.Width - 1 == otherRoom.area.X || room.area.X + room.area.Width == otherRoom.area.X - 1)
+                {
+                    overlapStart = Math.Max(room.area.Y, otherRoom.area.Y);
+                    overlapEnd = Math.Min(room.area.Y + room.area.Height, otherRoom.area.Y + otherRoom.area.Height);
+                    doorX = room.area.X + room.area.Width - 1;
+                    doorY = Utils.Random(overlapStart, overlapEnd + 1);
+                }
+                //otherRoom is to the left of room
+                else if (otherRoom.area.X + otherRoom.area.Width - 1 == room.area.X || otherRoom.area.X + otherRoom.area.Width == room.area.X - 1)
+                {
+                    overlapStart = Math.Max(room.area.Y, otherRoom.area.Y);
+                    overlapEnd = Math.Min(room.area.Y + room.area.Height, otherRoom.area.Y + otherRoom.area.Height);
+                    doorX = otherRoom.area.X + otherRoom.area.Width - 1;
+                    doorY = Utils.Random(overlapStart, overlapEnd + 1);
+                }
+                //otherRoom is under room
+                else if (room.area.Y + room.area.Height - 1 == otherRoom.area.Y || room.area.Y + room.area.Height == otherRoom.area.Y - 1)
+                {
+                    overlapStart = Math.Max(room.area.X, otherRoom.area.X);
+                    overlapEnd = Math.Min(room.area.X + room.area.Width, otherRoom.area.X + otherRoom.area.Width);
+                    doorX = Utils.Random(overlapStart, overlapEnd + 1);
+                    doorY = room.area.Y + room.area.Height - 1;
+                }
+                //otherRoom is above room
+                else if (otherRoom.area.Y + otherRoom.area.Height - 1 == room.area.Y || otherRoom.area.Y + otherRoom.area.Height == room.area.Y - 1)
+                {
+                    overlapStart = Math.Max(room.area.X, otherRoom.area.X);
+                    overlapEnd = Math.Min(room.area.X + room.area.Width, otherRoom.area.X + otherRoom.area.Width);
+                    doorX = Utils.Random(overlapStart, overlapEnd + 1);
+                    doorY = otherRoom.area.Y + otherRoom.area.Height - 1;
+                }
+
+                Door door = new Door(new Point(doorX, doorY));
+                door.roomA = room;
+                door.roomB = otherRoom;
+                doors.Add(door);
+
+                Console.WriteLine(door);
+            }
+        }
     }
 }
