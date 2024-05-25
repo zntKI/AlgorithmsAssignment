@@ -63,8 +63,8 @@ class SufficientDungeon : Dungeon
     {
         //Checks if it is possible to divide in the given orientation
         bool isDividingImpossible =
-            (shouldDivideVertically && room.area.Width < pMinimumRoomSize * 2 + 2)
-            || (!shouldDivideVertically && room.area.Height < pMinimumRoomSize * 2 + 2);
+            (shouldDivideVertically && room.area.Width < pMinimumRoomSize * 2 + 1) // '+ 1' For the overlaping of rooms, otherwise '+ 2'
+            || (!shouldDivideVertically && room.area.Height < pMinimumRoomSize * 2 + 1);
 
         if (isDividingImpossible)
             return false;
@@ -77,8 +77,8 @@ class SufficientDungeon : Dungeon
             Room roomToCheck = newRooms[i];
 
             bool isFurtherDividingImpossible =
-                roomToCheck.area.Width < pMinimumRoomSize * 2 + 2
-                && roomToCheck.area.Height < pMinimumRoomSize * 2 + 2;
+                roomToCheck.area.Width < pMinimumRoomSize * 2 + 1 // '+ 1' For the overlaping of rooms, otherwise '+ 2'
+                && roomToCheck.area.Height < pMinimumRoomSize * 2 + 1;
             if (isFurtherDividingImpossible)
             {
                 dividedRooms.Add(roomToCheck);
@@ -105,22 +105,22 @@ class SufficientDungeon : Dungeon
         int room2Size = 0;
 
         //Divide directly in half, without wasting computational power for generating random size
-        if (roomSize == pMinimumRoomSize * 2 + 2)
+        if (roomSize == pMinimumRoomSize * 2 + 1) // '+ 1' For the overlaping of rooms, otherwise '+ 2'
         {
             room1Size = pMinimumRoomSize + 1;
             room2Size = pMinimumRoomSize + 1;
         }
         else
         {
-            room1Size = Utils.Random(0, roomSize);
-            room2Size = roomSize - room1Size;
+            room1Size = Utils.Random(0, roomSize + 1); // '+ 1' For the overlaping of rooms, otherwise '+ 0'
+            room2Size = roomSize + 1 - room1Size;
             //Generate random size until it meets the requirements
             while (true)
             {
-                if (room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize)
+                if ((room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize) || (room1Size + room2Size - 1 != roomSize)) // For the overlaping of rooms, otherwise 'room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize'
                 {
-                    room1Size = Utils.Random(0, roomSize);
-                    room2Size = roomSize - room1Size;
+                    room1Size = Utils.Random(0, roomSize + 1); // '+ 1' For the overlaping of rooms, otherwise '+ 0'
+                    room2Size = roomSize + 1 - room1Size;
                 }
                 else
                     break;
@@ -133,8 +133,8 @@ class SufficientDungeon : Dungeon
                 ? new Room(new Rectangle(room.area.X, room.area.Y, room1Size, room.area.Height))
                 : new Room(new Rectangle(room.area.X, room.area.Y, room.area.Width, room1Size)),
             shouldDivideVertically
-                ? new Room(new Rectangle(room.area.X + room1Size, room.area.Y, room2Size, room.area.Height))
-                : new Room(new Rectangle(room.area.X, room.area.Y + room1Size, room.area.Width, room2Size))
+                ? new Room(new Rectangle(room.area.X + room1Size - 1, room.area.Y, room2Size, room.area.Height))
+                : new Room(new Rectangle(room.area.X, room.area.Y + room1Size - 1, room.area.Width, room2Size))
         };
     }
 }
