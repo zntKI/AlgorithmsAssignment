@@ -17,7 +17,7 @@ class Room
 	{
 		area = pArea;
         
-		doors = new List<Door>();
+		doors = new List<Door>(10);
     }
 
 	public void AddDoor(Door door)

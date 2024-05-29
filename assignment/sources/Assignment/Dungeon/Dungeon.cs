@@ -66,15 +66,29 @@ abstract class Dungeon : Canvas
 		rooms.Clear();
 		doors.Clear();
 
-		generate(pMinimumRoomSize);
+		int capacity = CalculateCapacity(pMinimumRoomSize);
+        rooms.Capacity = capacity;
+		doors.Capacity = capacity * 5;
+
+        generate(pMinimumRoomSize);
 
 		System.Console.WriteLine(this.GetType().Name + ".Generate:Dungeon generated.");
 
 		if (autoDrawAfterGenerate) draw();
 	}
 
-	//TODO: Override this method in your subclass to generate a dungeon as described in assignment 1
-	protected abstract void generate(int pMinimumRoomSize);
+	protected int CalculateCapacity(int pMinimumRoomSize)
+	{
+        int x = Mathf.Ceiling(size.Width / (pMinimumRoomSize * 1f));
+        int y = Mathf.Ceiling(size.Height / (pMinimumRoomSize * 1f));
+
+		int capacity = x * y;
+
+        return capacity;
+    }
+
+    //TODO: Override this method in your subclass to generate a dungeon as described in assignment 1
+    protected abstract void generate(int pMinimumRoomSize);
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to draw all or specific doors/rooms

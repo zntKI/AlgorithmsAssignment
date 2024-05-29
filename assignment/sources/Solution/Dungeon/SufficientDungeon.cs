@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 class SufficientDungeon : Dungeon
 {
     protected List<Room> dividedRooms;
+
     protected List<Room> currentRoomsToDivide;
     protected List<Room> newRoomsToDivide;
 
@@ -22,8 +23,19 @@ class SufficientDungeon : Dungeon
 
     protected override void generate(int pMinimumRoomSize)
     {
+        SetListCapacity(pMinimumRoomSize);
+
         GenerateRooms(pMinimumRoomSize);
         GenerateDoors();
+    }
+
+    protected void SetListCapacity(int pMinimumRoomSize)
+    {
+        int capacity =  CalculateCapacity(pMinimumRoomSize);
+
+        dividedRooms.Capacity = capacity;
+        currentRoomsToDivide.Capacity = capacity;
+        newRoomsToDivide.Capacity = capacity;
     }
 
     protected void GenerateRooms(int pMinimumRoomSize)
@@ -31,16 +43,16 @@ class SufficientDungeon : Dungeon
         //loop until there are no rooms that can be furher divided
         while (true)
         {
-            for (int i = 0; i < currentRoomsToDivide.Count; ++i)
+            foreach (var currentRoom in currentRoomsToDivide)
             {
                 //Randomly pick which way to try to divide first - horizontally or vertically
                 bool shouldDivideVertically = Utils.Random(0, 2) == 1;
 
                 //Try to divide using the given orientation
-                bool isFirstOrientationPossible = TryDivide(currentRoomsToDivide[i], shouldDivideVertically, pMinimumRoomSize);
+                bool isFirstOrientationPossible = TryDivide(currentRoom, shouldDivideVertically, pMinimumRoomSize);
                 if (!isFirstOrientationPossible) //Try dividing by the other orientation if the division by the first was unsuccessful
                 {
-                    TryDivide(currentRoomsToDivide[i], !shouldDivideVertically, pMinimumRoomSize);
+                    TryDivide(currentRoom, !shouldDivideVertically, pMinimumRoomSize);
                 }
             }
 
@@ -71,13 +83,11 @@ class SufficientDungeon : Dungeon
         if (isDividingImpossible)
             return false;
 
-        List<Room> newRooms = Divide(room, shouldDivideVertically, pMinimumRoomSize);
+        Room[] newRooms = Divide(room, shouldDivideVertically, pMinimumRoomSize);
 
         //Check if any rooms are further dividable
-        for (int i = 0; i < 2; ++i)
+        foreach (var roomToCheck in newRooms)
         {
-            Room roomToCheck = newRooms[i];
-
             bool isFurtherDividingImpossible =
                 roomToCheck.area.Width < pMinimumRoomSize * 2 + 1 // '+ 1' For the overlaping of rooms, otherwise '+ 2'
                 && roomToCheck.area.Height < pMinimumRoomSize * 2 + 1;
@@ -99,7 +109,7 @@ class SufficientDungeon : Dungeon
     /// </summary>
     /// <param name="room">The room to be divided in two</param>
     /// <returns>The newly formed rooms</returns>
-    List<Room> Divide(Room room, bool shouldDivideVertically, int pMinimumRoomSize)
+    Room[] Divide(Room room, bool shouldDivideVertically, int pMinimumRoomSize)
     {
         int roomSize = shouldDivideVertically ? room.area.Width : room.area.Height;
 
@@ -129,7 +139,7 @@ class SufficientDungeon : Dungeon
             }
         }
 
-        return new List<Room>()
+        return new Room[]
         {
             shouldDivideVertically
                 ? new Room(new Rectangle(room.area.X, room.area.Y, room1Size, room.area.Height))

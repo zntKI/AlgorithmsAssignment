@@ -13,6 +13,8 @@ class GoodDungeon : SufficientDungeon
 
     protected override void generate(int pMinimumRoomSize)
     {
+        SetListCapacity(pMinimumRoomSize);
+
         GenerateRooms(pMinimumRoomSize);
         RemoveBiggestAndSmallestRooms();
         GenerateDoors();
