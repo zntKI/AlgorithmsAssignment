@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 class SufficientDungeon : Dungeon
 {
-    List<Room> dividedRooms;
-    List<Room> currentRoomsToDivide;
-    List<Room> newRoomsToDivide;
+    protected List<Room> dividedRooms;
+    protected List<Room> currentRoomsToDivide;
+    protected List<Room> newRoomsToDivide;
 
     public SufficientDungeon(Size pSize) : base(pSize)
     {
@@ -26,7 +26,7 @@ class SufficientDungeon : Dungeon
         GenerateDoors();
     }
 
-    void GenerateRooms(int pMinimumRoomSize)
+    protected void GenerateRooms(int pMinimumRoomSize)
     {
         //loop until there are no rooms that can be furher divided
         while (true)
@@ -140,7 +140,7 @@ class SufficientDungeon : Dungeon
         };
     }
 
-    void GenerateDoors()
+    protected void GenerateDoors()
     {
         foreach (var room in rooms)
         {
@@ -222,6 +222,10 @@ class SufficientDungeon : Dungeon
                 Door door = new Door(new Point(doorX, doorY));
                 door.roomA = room;
                 door.roomB = otherRoom;
+
+                room.AddDoor(door);
+                otherRoom.AddDoor(door);
+
                 doors.Add(door);
             }
         }
