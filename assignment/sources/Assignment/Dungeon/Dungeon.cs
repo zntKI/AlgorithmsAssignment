@@ -145,6 +145,11 @@ abstract class Dungeon : Canvas
 		graphics.DrawRectangle(pColor, pDoor.location.X, pDoor.location.Y, 0.5f, 0.5f);
 	}
 
+	public void Clear()
+	{
+        graphics.Clear(Color.White);
+    }
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	///	This section contains helper methods to print information about the dungeon to the console
 

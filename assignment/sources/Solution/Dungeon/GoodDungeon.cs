@@ -27,26 +27,14 @@ class GoodDungeon : SufficientDungeon
         int maxSize = rooms.Max(r => r.area.Width * r.area.Height);
         int minSize = rooms.Min(r => r.area.Width * r.area.Height);
 
-        Console.WriteLine($"Max: {maxSize}; Min: {minSize}");
-
-        var maxRooms = rooms.Where(r => r.area.Width * r.area.Height == maxSize);
-        if (maxRooms.Count() == 0)
-        {
-            Console.WriteLine();
-        }
-
         //Remove romes meeting the requirements
         for (int i = 0; i < rooms.Count; ++i)
         {
             if (rooms[i].area.Width * rooms[i].area.Height == maxSize
                 || rooms[i].area.Width * rooms[i].area.Height == minSize)
             {
-                Console.WriteLine(rooms[i] + $" {(rooms[i].area.Width * rooms[i].area.Height == maxSize ? "Biggest" : "Smallest")}");
                 rooms.RemoveAt(i);
-            }
-            else
-            {
-                Console.WriteLine(rooms[i]);
+                --i;
             }
         }
     }

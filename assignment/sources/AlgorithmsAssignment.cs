@@ -40,9 +40,14 @@ class AlgorithmsAssignment : Game
 		if (Input.GetKeyDown(Key.R))
 		{
 			var children = GetChildren();
-			for (int i = 0; i < children.Count; i++)
+			for (int i = 0; i < children.Count; ++i)
 			{
+                if (children[i] is Dungeon)
+                {
+                    ((Dungeon)children[i]).Clear();
+                }
 				children[i].Destroy();
+                --i;
 			}
 
 			Init();
