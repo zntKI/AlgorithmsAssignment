@@ -43,11 +43,19 @@ class GoodDungeon : SufficientDungeon
     {
         foreach (var room in rooms)
         {
-            if (room.Doors.Length >= 4)
+            int countDoors = 0;
+            foreach (var door in doors)
+            {
+                if (room == door.roomA || room == door.roomB)
+                {
+                    ++countDoors;
+                }
+            }
+            if (countDoors >= 4)
                 room.fillColor = new SolidBrush(Color.Purple);
             else
             {
-                switch (room.Doors.Length)
+                switch (countDoors)
                 {
                     case 3:
                         room.fillColor = new SolidBrush(Color.Green);

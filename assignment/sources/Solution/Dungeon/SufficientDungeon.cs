@@ -171,9 +171,6 @@ class SufficientDungeon : Dungeon
 
                 Door door = GenerateDoor(room, otherRoom, isNeighbouringX);
 
-                room.AddDoor(door);
-                otherRoom.AddDoor(door);
-
                 doors.Add(door);
             }
         }

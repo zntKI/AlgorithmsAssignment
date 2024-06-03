@@ -9,19 +9,19 @@ class Room
 	public Rectangle area;
 	public Brush fillColor;
 
-	public Door[] Doors => doors.ToArray();
+	//public Door[] Doors => doors.ToArray();
 
-    private List<Door> doors;
+    //private List<Door> doors;
 
 	public Room (Rectangle pArea)
 	{
 		area = pArea;
         
-		doors = new List<Door>(10);
+		//doors = new List<Door>(10);
     }
 
-	public void AddDoor(Door door)
-		=> doors.Add(door);
+	//public void AddDoor(Door door)
+	//	=> doors.Add(door);
 
     public override string ToString()
     {
