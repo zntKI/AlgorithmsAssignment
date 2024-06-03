@@ -15,7 +15,7 @@ using System.Drawing;
 abstract class NodeGraph : Canvas
 {
 	//references to all the nodes in our nodegraph
-	public readonly List<Node> nodes = new List<Node>();
+	public readonly Dictionary<Node, List<Node>> nodes = new Dictionary<Node, List<Node>>();
 
 	//event handlers, register for any of these events if interested
 	//see SampleNodeGraphAgent for an example of a LeftClick event handler.
@@ -53,10 +53,10 @@ abstract class NodeGraph : Canvas
 	 */
 	public void AddConnection(Node pNodeA, Node pNodeB)
 	{
-		if (nodes.Contains(pNodeA) && nodes.Contains(pNodeB))
+		if (nodes.ContainsKey(pNodeA) && nodes.ContainsKey(pNodeB))
 		{
-			if (!pNodeA.connections.Contains(pNodeB)) pNodeA.connections.Add(pNodeB);
-			if (!pNodeB.connections.Contains(pNodeA)) pNodeB.connections.Add(pNodeA);
+			if (!nodes[pNodeA].Contains(pNodeB)) nodes[pNodeA].Add(pNodeB);
+			if (!nodes[pNodeB].Contains(pNodeA)) nodes[pNodeB].Add(pNodeA);
 		}
 	}
 
@@ -91,7 +91,7 @@ abstract class NodeGraph : Canvas
 
 	protected virtual void drawNodes()
 	{
-		foreach (Node node in nodes) drawNode(node, _defaultNodeColor);
+		foreach (Node node in nodes.Keys) drawNode(node, _defaultNodeColor);
 	}
 
 	protected virtual void drawNode(Node pNode, Brush pColor)
@@ -119,12 +119,12 @@ abstract class NodeGraph : Canvas
 	{
 		//note that this means all connections are drawn twice, once from A->B and once from B->A
 		//but since is only a debug view we don't care
-		foreach (Node node in nodes) drawNodeConnections(node);
+		foreach (Node node in nodes.Keys) drawNodeConnections(node);
 	}
 
 	protected virtual void drawNodeConnections(Node pNode)
 	{
-		foreach (Node connection in pNode.connections)
+		foreach (Node connection in nodes[pNode])
 		{
 			drawConnection(pNode, connection);
 		}
@@ -153,7 +153,7 @@ abstract class NodeGraph : Canvas
 	{
 		//then check if one of the nodes is under the mouse and if so assign it to _nodeUnderMouse
 		Node newNodeUnderMouse = null;
-		foreach (Node node in nodes)
+		foreach (Node node in nodes.Keys)
 		{
 			if (IsMouseOverNode(node))
 			{

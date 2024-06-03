@@ -13,8 +13,6 @@ using System.Drawing;
  */
 class Node
 {
-	public readonly List<Node> connections = new List<Node>();
-
 	//node data
 	public readonly Point location;
 	//what other data could/should you add here to implement the required pathfinding algorithms?

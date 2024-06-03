@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 /**
@@ -32,14 +33,17 @@ using System.Drawing;
 
 		//We assume (bad programming practice 1-o-1) there are two rooms in the given dungeon.
 		//The getRoomCenter is a convenience method to calculate the screen space center of a room
-		nodes.Add(new Node(getRoomCenter(_dungeon.rooms[0])));
-		nodes.Add(new Node(getRoomCenter(_dungeon.rooms[1])));
-		//The getDoorCenter is a convenience method to calculate the screen space center of a door
-		nodes.Add(new Node(getDoorCenter(_dungeon.doors[0])));
+		Node node1 = new Node(getRoomCenter(_dungeon.rooms[0]));
+        nodes.Add(node1, new List<Node>());
+        Node node2 = new Node(getRoomCenter(_dungeon.rooms[1]));
+        nodes.Add(node2, new List<Node>());
+        //The getDoorCenter is a convenience method to calculate the screen space center of a door
+        Node node3 = new Node(getDoorCenter(_dungeon.doors[0]));
+        nodes.Add(node3, new List<Node>());
 
 		//create a connection between the two rooms and the door...
-		AddConnection(nodes[0], nodes[2]);
-		AddConnection(nodes[1], nodes[2]);
+		AddConnection(node1, node3);
+		AddConnection(node2, node3);
 	}
 
 	/**

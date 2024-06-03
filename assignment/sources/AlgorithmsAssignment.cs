@@ -60,8 +60,8 @@ class AlgorithmsAssignment : Game
         ///	BASE SETUP - FEEL FREE TO SKIP
 
         //set our default background color and title
-        //GL.ClearColor(1, 1, 1, 1); // If not excellent
-        GL.ClearColor(0, 0, 0, 1); //If excellent
+        GL.ClearColor(1, 1, 1, 1); // If not excellent
+        //GL.ClearColor(0, 0, 0, 1); //If excellent
         GL.glfwSetWindowTitle("Algorithms Game");
 
         //The simplest approach to visualize a dungeon, is using black and white squares
@@ -71,8 +71,8 @@ class AlgorithmsAssignment : Game
         //
         //To visualize where these scaled pixels are we also add a grid, where we use
         //this same SCALE value as a grid size setting. Comment out the next line to hide it.
-        //Grid grid = new Grid(width, height, SCALE); //If not excellent
-        Grid grid = null; //If excellent
+        Grid grid = new Grid(width, height, SCALE); //If not excellent
+        //Grid grid = null; //If excellent
 
         /////////////////////////////////////////////////////////////////////////////////////////
         ///	ASSIGNMENT 1 : DUNGEON - READ CAREFULLY
@@ -101,8 +101,8 @@ class AlgorithmsAssignment : Game
 
         //_dungeon = new SampleDungeon(size);
         //_dungeon = new SufficientDungeon(size);
-        //_dungeon = new GoodDungeon(size);
-        _dungeon = new ExcellentDungeon(size);
+        _dungeon = new GoodDungeon(size);
+        //_dungeon = new ExcellentDungeon(size);
 
         /////////////////////////////////
         //Assignment 1.2 Good (optional)
@@ -141,7 +141,7 @@ class AlgorithmsAssignment : Game
         //TODO: Study the SampleDungeonNodeGraph class and try it out below
         //TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-        //_graph = new SampleDungeonNodeGraph(_dungeon);
+        _graph = new SampleDungeonNodeGraph(_dungeon);
         //_graph = new HighLevelDungeonNodeGraph(_dungeon);
         //_graph = new LowLevelDungeonNodeGraph(_dungeon);
 

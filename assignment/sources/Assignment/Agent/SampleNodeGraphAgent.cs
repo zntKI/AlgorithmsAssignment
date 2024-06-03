@@ -16,7 +16,7 @@ class SampleNodeGraphAgent : NodeGraphAgent
 		//position ourselves on a random node
 		if (pNodeGraph.nodes.Count > 0)
 		{
-			jumpToNode(pNodeGraph.nodes[Utils.Random(0, pNodeGraph.nodes.Count)]);
+			//jumpToNode(pNodeGraph.nodes[Utils.Random(0, pNodeGraph.nodes.Count)]);
 		}
 
 		//listen to nodeclicks

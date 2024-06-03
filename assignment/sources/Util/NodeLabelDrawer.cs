@@ -43,7 +43,7 @@ class NodeLabelDrawer : Canvas
 
 	protected virtual void drawLabels()
 	{
-		foreach (Node node in _graph.nodes) drawNode(node);
+		foreach (Node node in _graph.nodes.Keys) drawNode(node);
 	}
 
 	protected virtual void drawNode(Node pNode)
