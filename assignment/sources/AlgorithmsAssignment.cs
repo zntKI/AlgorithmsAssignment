@@ -146,7 +146,8 @@ class AlgorithmsAssignment : Game
         //TODO: Study the SampleNodeGraphAgent class and try it out below
         //TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
-        _agent = new SampleNodeGraphAgent(_graph);
+        //_agent = new SampleNodeGraphAgent(_graph);
+        _agent = new SufficientNodeGraphAgent(_graph);
         //_agent = new OnGraphWayPointAgent(_graph);
 
         ////////////////////////////////////////////////////////////

@@ -8,7 +8,7 @@ using System.Linq;
 class SampleNodeGraphAgent : NodeGraphAgent
 {
 	//Current target to move towards
-	private Node _target = null;
+	protected Node _target = null;
 
 	public SampleNodeGraphAgent(NodeGraph pNodeGraph) : base(pNodeGraph)
 	{
