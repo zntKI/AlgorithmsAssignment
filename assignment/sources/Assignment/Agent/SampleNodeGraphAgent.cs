@@ -1,4 +1,5 @@
 ﻿using GXPEngine;
+using System.Linq;
 
 /**
  * Very simple example of a nodegraphagent that walks directly to the node you clicked on,
@@ -16,7 +17,8 @@ class SampleNodeGraphAgent : NodeGraphAgent
 		//position ourselves on a random node
 		if (pNodeGraph.nodes.Count > 0)
 		{
-			//jumpToNode(pNodeGraph.nodes[Utils.Random(0, pNodeGraph.nodes.Count)]);
+			int rnd = Utils.Random(0, pNodeGraph.nodes.Count);
+			jumpToNode(pNodeGraph.nodes.Keys.First(n => n.id == rnd.ToString()));
 		}
 
 		//listen to nodeclicks

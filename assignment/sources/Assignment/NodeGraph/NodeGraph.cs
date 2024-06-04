@@ -204,4 +204,9 @@ abstract class NodeGraph : Canvas
 		return mouseToNodeDistance < nodeSize;
 	}
 
+	public void Clear()
+	{
+		Node.ResetId();
+	}
+
 }

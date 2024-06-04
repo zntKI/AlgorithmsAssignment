@@ -38,21 +38,12 @@ class AlgorithmsAssignment : Game
 	void Update()
 	{
 		if (Input.GetKeyDown(Key.R))
-		{
-			var children = GetChildren();
-			for (int i = 0; i < children.Count; ++i)
-			{
-                if (children[i] is Dungeon)
-                {
-                    ((Dungeon)children[i]).Clear();
-                }
-				children[i].Destroy();
-                --i;
-			}
+        {
+            Clear();
 
-			Init();
+            Init();
         }
-	}
+    }
 
     void Init()
     {
@@ -155,7 +146,7 @@ class AlgorithmsAssignment : Game
         //TODO: Study the SampleNodeGraphAgent class and try it out below
         //TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
-        //_agent = new SampleNodeGraphAgent(_graph);
+        _agent = new SampleNodeGraphAgent(_graph);
         //_agent = new OnGraphWayPointAgent(_graph);
 
         ////////////////////////////////////////////////////////////
@@ -231,6 +222,24 @@ class AlgorithmsAssignment : Game
         /////////////////////////////////////////////////
         //The end!
         ////
+    }
+
+    void Clear()
+    {
+        var children = GetChildren();
+        for (int i = 0; i < children.Count; ++i)
+        {
+            if (children[i] is Dungeon)
+            {
+                ((Dungeon)children[i]).Clear();
+            }
+            else if (children[i] is NodeGraph)
+            {
+                ((NodeGraph)children[i]).Clear();
+            }
+            children[i].Destroy();
+            --i;
+        }
     }
 }
 

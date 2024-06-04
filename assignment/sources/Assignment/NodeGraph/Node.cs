@@ -35,7 +35,13 @@ class Node
 		System.Console.WriteLine(id);
 	}
 
-	public override string ToString()
+	public static void ResetId()
+	{
+		lastID = 0;
+	}
+
+
+    public override string ToString()
 	{
 		return id;
 	}
