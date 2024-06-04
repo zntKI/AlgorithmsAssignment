@@ -141,7 +141,8 @@ class AlgorithmsAssignment : Game
         //TODO: Study the SampleDungeonNodeGraph class and try it out below
         //TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
-        _graph = new SampleDungeonNodeGraph(_dungeon);
+        //_graph = new SampleDungeonNodeGraph(_dungeon);
+        _graph = new SufficientDungeonNodeGraph(_dungeon);
         //_graph = new HighLevelDungeonNodeGraph(_dungeon);
         //_graph = new LowLevelDungeonNodeGraph(_dungeon);
 
