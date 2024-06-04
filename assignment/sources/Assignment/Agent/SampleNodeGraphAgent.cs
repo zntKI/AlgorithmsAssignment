@@ -18,7 +18,9 @@ class SampleNodeGraphAgent : NodeGraphAgent
 		if (pNodeGraph.nodes.Count > 0)
 		{
 			int rnd = Utils.Random(0, pNodeGraph.nodes.Count);
-			jumpToNode(pNodeGraph.nodes.Keys.First(n => n.id == rnd.ToString()));
+			Node startingNode = pNodeGraph.nodes.Keys.First(n => n.id == rnd.ToString());
+            jumpToNode(startingNode);
+			_target = startingNode; //Sets the target node to the starting one so that it can be read and assigned to endNode in the children' constructors and then nullified again
 		}
 
 		//listen to nodeclicks
