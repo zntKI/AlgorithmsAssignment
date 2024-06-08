@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GXPEngine;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,18 +19,54 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
 
     protected override void generate()
     {
-        for (int i = 0; i < _tiledView.columns * _tiledView.rows; ++i)
+        //for (int i = 0; i < _tiledView.columns * _tiledView.rows; ++i)
+        //{
+        //    TileType tileType = _tiledView.GetTileType(i % _tiledView.columns, i / _tiledView.columns);
+        //    if (tileType.walkable) // Get the first accessible ground tile and starts the recursion from there
+        //    {
+        //        GenerateNode(i, null);
+        //        break;
+        //    }
+        //}
+
+
+        //Get a random room that has at least ome connection to another room
+        int rnd = Utils.Random(0, _dungeon.rooms.Count);
+        Room roomToStartFrom = _dungeon.rooms[rnd];
+        bool doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
+        while (!doesRoomHaveConnections)
         {
-            //TODO: Think of better way of choosing the first tile (ignore rooms that do not have a connection with other rooms)
-            TileType tileType = _tiledView.GetTileType(i % _tiledView.columns, i / _tiledView.columns);
-            if (tileType.walkable) // Get the first accessible ground tile and starts the recursion from there
-            {
-                GenerateNode(i, null);
-                break;
-            }
+            rnd = Utils.Random(0, _dungeon.rooms.Count);
+            roomToStartFrom = _dungeon.rooms[rnd];
+            doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
         }
+
+        //Gets the top left ground tile
+        Point pos = new Point(roomToStartFrom.area.X + 1, roomToStartFrom.area.Y + 1);
+        //Converts the pos to a tiledView index
+        int index = pos.Y * _tiledView.columns + pos.X;
+
+        //Start recursion
+        GenerateNode(index, null);
     }
 
+    /// <summary>
+    /// Checks if a given room has at least one connection to another room
+    /// </summary>
+    bool CheckRoomForConnections(Room roomToChek)
+    {
+        foreach (var door in _dungeon.doors)
+        {
+            if (door.roomA == roomToChek || door.roomB == roomToChek)
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Recursive function which generates and connects nodes
+    /// </summary>
     void GenerateNode(int index, Node previousNode)
     {
         int x = index % _tiledView.columns;
@@ -37,12 +74,11 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
 
         TileType tileType = _tiledView.GetTileType(x, y);
         Point pos = getPointCenter(new Point(x, y));
+        Node nodeToConnectWith;
         if (!tileType.walkable)
             return;
-        else if (nodes.Keys.FirstOrDefault(n => n.location == pos) != null
-            /*Check if Node already exists on the given pos*/)
+        else if (TryGetNodeAtPosition(pos, out nodeToConnectWith))
         {
-            Node nodeToConnectWith = nodes.Keys.FirstOrDefault(n => n.location == pos);
             nodes[previousNode].Add(nodeToConnectWith);
             return;
         }
@@ -60,5 +96,17 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
         //Make connection as well
         if (previousNode != null)
             nodes[previousNode].Add(node);
+    }
+
+    /// <summary>
+    /// Checks if a node already exists on the given pos
+    /// </summary>
+    /// <param name="positionToCheck"></param>
+    /// <param name="node"></param>
+    /// <returns></returns>
+    bool TryGetNodeAtPosition(Point positionToCheck, out Node node)
+    {
+        node = nodes.Keys.FirstOrDefault(n => n.location == positionToCheck);
+        return node != null ? true : false;
     }
 }
