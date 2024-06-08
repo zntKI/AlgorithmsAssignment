@@ -124,6 +124,11 @@ class AlgorithmsAssignment : Game
         ///							
         /// SKIP THIS BLOCK UNTIL YOU'VE FINISHED ASSIGNMENT 1 AND ASKED FOR TEACHER FEEDBACK !
 
+
+        //_tiledView = new SampleTiledView(_dungeon, TileType.GROUND);
+        _tiledView = new TiledDungeonView(_dungeon, TileType.VOID);
+        if (_tiledView != null) _tiledView.Generate();
+
         /////////////////////////////////////////////////////////////
         //Assignment 2.1 Sufficient (Mandatory) High Level NodeGraph
         //
@@ -133,9 +138,8 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
         //_graph = new SampleDungeonNodeGraph(_dungeon);
-        _graph = new SufficientDungeonNodeGraph(_dungeon);
-        //_graph = new HighLevelDungeonNodeGraph(_dungeon);
-        //_graph = new LowLevelDungeonNodeGraph(_dungeon);
+        //_graph = new SufficientDungeonNodeGraph(_dungeon);
+        _graph = new ExcellentDungeonNodeGraph(_dungeon, _tiledView);
 
         if (_graph != null) _graph.Generate();
 
@@ -158,10 +162,6 @@ class AlgorithmsAssignment : Game
         //TODO: Study the TiledView and TileType classes
         //TODO: Study the SampleTileView class and try it out below
         //TODO: Comment out the SampleTiledView again, implement the TiledDungeonView and uncomment it below
-
-        //_tiledView = new SampleTiledView(_dungeon, TileType.GROUND);
-        _tiledView = new TiledDungeonView(_dungeon, TileType.VOID); 
-        if (_tiledView != null) _tiledView.Generate();
 
         ////////////////////////////////////////////////////////////
         //Assignment 2.2 Good (Optional) RandomWayPointAgent
