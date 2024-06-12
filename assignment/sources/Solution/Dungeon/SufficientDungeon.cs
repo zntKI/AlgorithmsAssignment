@@ -152,24 +152,45 @@ class SufficientDungeon : Dungeon
 
     protected void GenerateDoors()
     {
-        foreach (var room in rooms)
-        {
-            foreach (var otherRoom in rooms)
-            {
-                if (otherRoom == room)
-                    continue;
+        //foreach (var room in rooms)
+        //{
+        //    foreach (var otherRoom in rooms)
+        //    {
+        //        if (otherRoom == room)
+        //            continue;
 
+        //        //Skip room if not neighbouring
+        //        (bool isNeighbouringX, bool isNeighbouringY) = CheckForNeighbouring(room, otherRoom);
+        //        if (!isNeighbouringX && !isNeighbouringY)
+        //            continue;
+
+        //        //Checks if there is already a door between the given rooms
+        //        if (CheckForDoorExists(room, otherRoom))
+        //            continue;
+
+
+        //        Door door = GenerateDoor(room, otherRoom, isNeighbouringX);
+
+        //        doors.Add(door);
+        //    }
+        //}
+
+        //Optimized variant:
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            for (int j = i + 1; j < rooms.Count; j++)
+            {
                 //Skip room if not neighbouring
-                (bool isNeighbouringX, bool isNeighbouringY) = CheckForNeighbouring(room, otherRoom);
+                (bool isNeighbouringX, bool isNeighbouringY) = CheckForNeighbouring(rooms[i], rooms[j]);
                 if (!isNeighbouringX && !isNeighbouringY)
                     continue;
 
                 //Checks if there is already a door between the given rooms
-                if (CheckForDoorExists(room, otherRoom))
-                    continue;
+                //if (CheckForDoorExists(rooms[i], rooms[j])) // NO need for that check anymore since the potential rooms have been skipped due to 'j = i + 1'
+                //    continue;
 
 
-                Door door = GenerateDoor(room, otherRoom, isNeighbouringX);
+                Door door = GenerateDoor(rooms[i], rooms[j], isNeighbouringX);
 
                 doors.Add(door);
             }

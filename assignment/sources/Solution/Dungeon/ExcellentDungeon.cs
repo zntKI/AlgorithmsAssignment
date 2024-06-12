@@ -15,10 +15,10 @@ class ExcellentDungeon : SufficientDungeon
     {
         base.generate(pMinimumRoomSize);
 
-        OffsetRooms();
+        ModifyRooms();
     }
 
-    void OffsetRooms()
+    void ModifyRooms()
     {
     }
 

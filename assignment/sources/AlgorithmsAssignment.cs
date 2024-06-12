@@ -91,8 +91,8 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out SampleDungeon below, implement a SufficientDungeon class and uncomment it below
 
         //_dungeon = new SampleDungeon(size);
-        //_dungeon = new SufficientDungeon(size);
-        _dungeon = new GoodDungeon(size);
+        _dungeon = new SufficientDungeon(size);
+        //_dungeon = new GoodDungeon(size);
         //_dungeon = new ExcellentDungeon(size);
 
         /////////////////////////////////
@@ -138,8 +138,8 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
         //_graph = new SampleDungeonNodeGraph(_dungeon);
-        //_graph = new SufficientDungeonNodeGraph(_dungeon);
-        _graph = new ExcellentDungeonNodeGraph(_dungeon, _tiledView);
+        _graph = new SufficientDungeonNodeGraph(_dungeon);
+        //_graph = new ExcellentDungeonNodeGraph(_dungeon, _tiledView);
 
         if (_graph != null) _graph.Generate();
 
