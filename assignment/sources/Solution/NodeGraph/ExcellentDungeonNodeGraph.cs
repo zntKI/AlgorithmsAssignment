@@ -19,6 +19,14 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
 
     protected override void generate()
     {
+
+        //If sufficient dungeon
+        //
+        int i = _tiledView.columns + 1;
+        GenerateNode(i, null);
+
+        // If excellent dungeon
+        //
         //for (int i = 0; i < _tiledView.columns * _tiledView.rows; ++i)
         //{
         //    TileType tileType = _tiledView.GetTileType(i % _tiledView.columns, i / _tiledView.columns);
@@ -29,40 +37,41 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
         //    }
         //}
 
-
+        // If good dungeon
+        //
         //Get a random room that has at least ome connection to another room
-        int rnd = Utils.Random(0, _dungeon.rooms.Count);
-        Room roomToStartFrom = _dungeon.rooms[rnd];
-        bool doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
-        while (!doesRoomHaveConnections)
-        {
-            rnd = Utils.Random(0, _dungeon.rooms.Count);
-            roomToStartFrom = _dungeon.rooms[rnd];
-            doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
-        }
+        //int rnd = Utils.Random(0, _dungeon.rooms.Count);
+        //Room roomToStartFrom = _dungeon.rooms[rnd];
+        //bool doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
+        //while (!doesRoomHaveConnections)
+        //{
+        //    rnd = Utils.Random(0, _dungeon.rooms.Count);
+        //    roomToStartFrom = _dungeon.rooms[rnd];
+        //    doesRoomHaveConnections = CheckRoomForConnections(roomToStartFrom);
+        //}
 
-        //Gets the top left ground tile
-        Point pos = new Point(roomToStartFrom.area.X + 1, roomToStartFrom.area.Y + 1);
-        //Converts the pos to a tiledView index
-        int index = pos.Y * _tiledView.columns + pos.X;
+        ////Gets the top left ground tile
+        //Point pos = new Point(roomToStartFrom.area.X + 1, roomToStartFrom.area.Y + 1);
+        ////Converts the pos to a tiledView index
+        //int index = pos.Y * _tiledView.columns + pos.X;
 
-        //Start recursion
-        GenerateNode(index, null);
+        ////Start recursion
+        //GenerateNode(index, null);
     }
 
     /// <summary>
     /// Checks if a given room has at least one connection to another room
     /// </summary>
-    bool CheckRoomForConnections(Room roomToChek)
-    {
-        foreach (var door in _dungeon.doors)
-        {
-            if (door.roomA == roomToChek || door.roomB == roomToChek)
-                return true;
-        }
+    //bool CheckRoomForConnections(Room roomToChek)
+    //{
+    //    foreach (var door in _dungeon.doors)
+    //    {
+    //        if (door.roomA == roomToChek || door.roomB == roomToChek)
+    //            return true;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
     /// <summary>
     /// Recursive function which generates and connects nodes
@@ -101,9 +110,7 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
     /// <summary>
     /// Checks if a node already exists on the given pos
     /// </summary>
-    /// <param name="positionToCheck"></param>
-    /// <param name="node"></param>
-    /// <returns></returns>
+    /// <param name="node">The node if there was such</param>
     bool TryGetNodeAtPosition(Point positionToCheck, out Node node)
     {
         node = nodes.Keys.FirstOrDefault(n => n.location == positionToCheck);

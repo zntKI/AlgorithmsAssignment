@@ -126,7 +126,7 @@ class AlgorithmsAssignment : Game
 
 
         //_tiledView = new SampleTiledView(_dungeon, TileType.GROUND);
-        _tiledView = new TiledDungeonView(_dungeon, TileType.VOID);
+        //_tiledView = new TiledDungeonView(_dungeon, TileType.VOID);
         if (_tiledView != null) _tiledView.Generate();
 
         /////////////////////////////////////////////////////////////
@@ -151,8 +151,8 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
         //_agent = new SampleNodeGraphAgent(_graph);
-        //_agent = new SufficientNodeGraphAgent(_graph);
-        _agent = new GoodNodeGraphAgent(_graph);
+        _agent = new SufficientNodeGraphAgent(_graph);
+        //_agent = new GoodNodeGraphAgent(_graph);
         //_agent = new OnGraphWayPointAgent(_graph);
 
         ////////////////////////////////////////////////////////////
