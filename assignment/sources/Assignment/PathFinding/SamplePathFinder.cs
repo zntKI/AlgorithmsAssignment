@@ -10,7 +10,7 @@ class SamplePathFinder : PathFinder	{
 
 	public SamplePathFinder(NodeGraph pGraph) : base(pGraph) {}
 
-	protected override List<Node> generate(Node pFrom, Node pTo)
+	protected override void generate()
 	{
 		//at this point you know the FROM and TO node and you have to write an 
 		//algorithm which finds the path between them
@@ -19,16 +19,8 @@ class SamplePathFinder : PathFinder	{
 		int dieRoll = Utils.Random(1, 7);
 		Console.WriteLine("I rolled a ..." + dieRoll);
 
-		if (dieRoll == 6)
-		{
-			Console.WriteLine("Yes 'random' path found!!");
-			return new List<Node>() { pFrom , pTo };
-		}
-		else
-		{
-			Console.WriteLine("Too bad, no path found !!");
-			return null;
-		}
+		_lastCalculatedPath.Enqueue(_startNode);
+		_lastCalculatedPath.Enqueue(_endNode);
 	}
 
 }

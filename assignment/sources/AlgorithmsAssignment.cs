@@ -30,7 +30,7 @@ class AlgorithmsAssignment : Game
 	private const int SCALE = 20;				//TODO: experiment with changing this
 	private const int MIN_ROOM_SIZE = 8;		//TODO: use this setting in your dungeon generator
 
-	public AlgorithmsAssignment() : base(480 * 2, 420 * 2, false, true, -1, -1, false)
+	public AlgorithmsAssignment() : base(480 * 2, 420 * 2, false, false, -1, -1, false)
 	{
 		Init();
 	}
@@ -126,7 +126,7 @@ class AlgorithmsAssignment : Game
 
 
         //_tiledView = new SampleTiledView(_dungeon, TileType.GROUND);
-        //_tiledView = new TiledDungeonView(_dungeon, TileType.VOID);
+        _tiledView = new TiledDungeonView(_dungeon, TileType.VOID);
         if (_tiledView != null) _tiledView.Generate();
 
         /////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SamplePathFinder, implement a RecursivePathFinder and uncomment it below
 
         //_pathFinder = new SamplePathFinder(_graph);
-        //_pathFinder = new RecursivePathFinder(_graph);
+        _pathFinder = new SufficientPathFinder(_graph);
 
         //////////////////////////////////////////////////////////////////////////
         //Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding

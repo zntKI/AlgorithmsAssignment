@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 /**
  * This class is the base class for your pathfinder, you 'only' have to override generate so that it returns
@@ -16,9 +17,12 @@ abstract class PathFinder : Canvas
 {
 	protected Node _startNode;							
 	protected Node _endNode;
-	protected List<Node> _lastCalculatedPath = null;
+	protected Queue<Node> _lastCalculatedPath;
 
 	protected NodeGraph _nodeGraph;
+
+
+
 
 	//some values for drawing the path
 	private Pen _outlinePen = new Pen(Color.Black, 4);
@@ -35,7 +39,9 @@ abstract class PathFinder : Canvas
 		_nodeGraph.OnNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };
 		_nodeGraph.OnNodeShiftRightClicked += (node) => { _endNode = node; draw(); };
 
-		Console.WriteLine("\n-----------------------------------------------------------------------------");
+		_lastCalculatedPath = new Queue<Node>();
+
+        Console.WriteLine("\n-----------------------------------------------------------------------------");
 		Console.WriteLine(this.GetType().Name + " created.");
 		Console.WriteLine("* Shift-LeftClick to set the starting node.");
 		Console.WriteLine("* Shift-RightClick to set the target node.");
@@ -47,13 +53,18 @@ abstract class PathFinder : Canvas
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// Core PathFinding methods
 
-	public List<Node> Generate(Node pFrom, Node pTo)
+	public Queue<Node> Generate()
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating path...");
 
-		_lastCalculatedPath = null;
-		_startNode = pFrom;
-		_endNode = pTo;
+		_lastCalculatedPath.Clear();
+
+		//if (_startNode != pFrom || _endNode != pTo)
+		//{
+		//	Console.WriteLine("In");
+		//}
+		//_startNode = pFrom;
+		//_endNode = pTo;
 
 		if (_startNode == null || _endNode == null)
 		{
@@ -61,7 +72,7 @@ abstract class PathFinder : Canvas
 		}
 		else
 		{
-			_lastCalculatedPath = generate(pFrom, pTo);
+			generate();
 		}
 
 		draw();
@@ -76,7 +87,7 @@ abstract class PathFinder : Canvas
 	 *	-> Count == 0	means	'Completed but empty (no path found).'
 	 *	-> Count > 0	means	'Yolo let's go!'
 	 */
-	protected abstract List<Node> generate(Node pFrom, Node pTo);
+	protected abstract void generate();
 
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// PathFinder visualization helpers method
@@ -100,16 +111,18 @@ abstract class PathFinder : Canvas
 
 	protected virtual void drawPath()
 	{
+		List<Node> nodesToDraw = _lastCalculatedPath.ToList();
+
 		//draw all lines
-		for (int i = 0; i < _lastCalculatedPath.Count - 1; i++)
+		for (int i = 0; i < nodesToDraw.Count - 1; i++)
 		{
-			drawConnection(_lastCalculatedPath[i], _lastCalculatedPath[i + 1]);
+			drawConnection(nodesToDraw[i], nodesToDraw[i + 1]);
 		}
 
 		//draw all nodes between start and end
-		for (int i = 1; i < _lastCalculatedPath.Count - 1; i++)
+		for (int i = 1; i < nodesToDraw.Count - 1; i++)
 		{
-			drawNode(_lastCalculatedPath[i], _pathNodeColor);
+			drawNode(nodesToDraw[i], _pathNodeColor);
 		}
 	}
 
@@ -164,14 +177,14 @@ abstract class PathFinder : Canvas
 			//clear everything
 			graphics.Clear(Color.Transparent);
 			_startNode = _endNode = null;
-			_lastCalculatedPath = null;
-		}
+            _lastCalculatedPath.Clear();
+        }
 
 		if (Input.GetKeyDown(Key.G))
 		{
 			if (_startNode != null && _endNode != null)
 			{
-				Generate(_startNode, _endNode);
+				Generate();
 			}
 		}
 	}
