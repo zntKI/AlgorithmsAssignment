@@ -53,19 +53,14 @@ abstract class PathFinder : Canvas
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// Core PathFinding methods
 
-	public Queue<Node> Generate()
+	public Queue<Node> Generate(Node pFrom, Node pTo)
 	{
 		System.Console.WriteLine(this.GetType().Name + ".Generate: Generating path...");
 
 		_lastCalculatedPath.Clear();
 
-		//if (_startNode != pFrom || _endNode != pTo)
-		//{
-		//	Console.WriteLine("In");
-		//}
-		//_startNode = pFrom;
-		//_endNode = pTo;
-
+		_startNode = pFrom;
+		_endNode = pTo;
 		if (_startNode == null || _endNode == null)
 		{
 			Console.WriteLine("Please specify start and end node before trying to generate a path.");
@@ -175,19 +170,22 @@ abstract class PathFinder : Canvas
 		if (Input.GetKeyDown(Key.C))
 		{
 			//clear everything
-			graphics.Clear(Color.Transparent);
-			_startNode = _endNode = null;
-            _lastCalculatedPath.Clear();
+			Clear();
         }
 
 		if (Input.GetKeyDown(Key.G))
 		{
 			if (_startNode != null && _endNode != null)
 			{
-				Generate();
+				Generate(_startNode, _endNode);
 			}
 		}
 	}
 
-
+	public void Clear()
+	{
+        graphics.Clear(Color.Transparent);
+        _startNode = _endNode = null;
+        _lastCalculatedPath.Clear();
+    }
 }

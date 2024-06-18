@@ -151,7 +151,7 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SampleNodeGraphAgent again, implement an OnGraphWayPointAgent class and uncomment it below
 
         //_agent = new SampleNodeGraphAgent(_graph);
-        _agent = new SufficientNodeGraphAgent(_graph);
+        //_agent = new SufficientNodeGraphAgent(_graph);
         //_agent = new GoodNodeGraphAgent(_graph);
         //_agent = new OnGraphWayPointAgent(_graph);
 
@@ -198,7 +198,7 @@ class AlgorithmsAssignment : Game
         //_pathFinder = new BreadthFirstPathFinder(_graph);
 
         //TODO: Implement a PathFindingAgent that uses one of your pathfinder implementations (should work with any pathfinder implementation)
-        //_agent = new PathFindingAgent(_graph, _pathFinder);
+        _agent = new PathFindingAgent(_graph, _pathFinder);
 
         /////////////////////////////////////////////////
         //Assignment 3.2 Good & 3.3 Excellent (Optional)
