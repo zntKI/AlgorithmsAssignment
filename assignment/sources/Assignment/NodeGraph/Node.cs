@@ -13,6 +13,9 @@ using System.Drawing;
  */
 class Node
 {
+	//For BFS Path finder
+	public Node parent;
+
 	//node data
 	public readonly Point location;
 	//what other data could/should you add here to implement the required pathfinding algorithms?
