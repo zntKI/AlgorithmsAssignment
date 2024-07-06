@@ -98,9 +98,13 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
 
         //Recursively traverse neighbouring nodes
         GenerateNode(index + 1, node); //To the right
+        GenerateNode(index + _tiledView.columns + 1, node); //To the bottom-right
         GenerateNode(index + _tiledView.columns, node); //To the bottom
+        GenerateNode(index + _tiledView.columns - 1, node); //To the bottom-left
         GenerateNode(index - 1, node); //To the left
+        GenerateNode(index - _tiledView.columns - 1, node); //To the top-left
         GenerateNode(index - _tiledView.columns, node); //To the top
+        GenerateNode(index - _tiledView.columns + 1, node); //To the top-right
 
         //Make connection as well
         if (previousNode != null)

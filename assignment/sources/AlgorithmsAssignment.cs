@@ -30,7 +30,7 @@ class AlgorithmsAssignment : Game
 	private const int SCALE = 20;				//TODO: experiment with changing this
 	private const int MIN_ROOM_SIZE = 8;		//TODO: use this setting in your dungeon generator
 
-	public AlgorithmsAssignment() : base(480, 420, false, false, -1, -1, false)
+	public AlgorithmsAssignment() : base(1920, 1080, false, false, -1, -1, false)
 	{
 		Init();
 	}
@@ -191,6 +191,7 @@ class AlgorithmsAssignment : Game
         //_pathFinder = new SamplePathFinder(_graph);
         //_pathFinder = new SufficientPathFinder(_graph);
         _pathFinder = new BFSPathFinder(_graph);
+        //_pathFinder = new DijkstraPathFinder(_graph);
 
         //////////////////////////////////////////////////////////////////////////
         //Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding

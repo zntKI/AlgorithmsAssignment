@@ -13,7 +13,7 @@ using System.Drawing;
  */
 class Node
 {
-	//For BFS Path finder
+	//For Path finding
 	public Node parent;
 
 	//node data

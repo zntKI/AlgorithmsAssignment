@@ -153,9 +153,11 @@
     <Compile Include="sources\Solution\Dungeon\SufficientDungeon.cs" />
     <Compile Include="sources\Solution\NodeGraph\ExcellentDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraph\SufficientDungeonNodeGraph.cs" />
-    <Compile Include="sources\Solution\PathFinder\BFSPathFinder.cs" />
-    <Compile Include="sources\Solution\PathFinder\PathFindingAgent.cs" />
-    <Compile Include="sources\Solution\PathFinder\SufficientPathFinder.cs" />
+    <Compile Include="sources\Solution\PathFinding\BFSPathFinder.cs" />
+    <Compile Include="sources\Solution\PathFinding\DijkstraPathFinder.cs" />
+    <Compile Include="sources\Solution\PathFinding\PathFindingAgent.cs" />
+    <Compile Include="sources\Solution\PathFinding\SearchPathFinder.cs" />
+    <Compile Include="sources\Solution\PathFinding\SufficientPathFinder.cs" />
     <Compile Include="sources\Solution\Tiles\TiledDungeonView.cs" />
     <Compile Include="sources\Util\Grid.cs" />
     <Compile Include="sources\Util\NodeLabelDrawer.cs" />
