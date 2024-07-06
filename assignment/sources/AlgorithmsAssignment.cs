@@ -30,7 +30,7 @@ class AlgorithmsAssignment : Game
 	private const int SCALE = 20;				//TODO: experiment with changing this
 	private const int MIN_ROOM_SIZE = 8;		//TODO: use this setting in your dungeon generator
 
-	public AlgorithmsAssignment() : base(1920, 1080, false, false, -1, -1, false)
+	public AlgorithmsAssignment() : base(480, 420, false, false, -1, -1, false)
 	{
 		Init();
 	}
@@ -138,8 +138,8 @@ class AlgorithmsAssignment : Game
         //TODO: Comment out the SampleDungeonNodeGraph again, implement a HighLevelDungeonNodeGraph class and uncomment it below
 
         //_graph = new SampleDungeonNodeGraph(_dungeon);
-        _graph = new SufficientDungeonNodeGraph(_dungeon);
-        //_graph = new ExcellentDungeonNodeGraph(_dungeon, _tiledView);
+        //_graph = new SufficientDungeonNodeGraph(_dungeon);
+        _graph = new ExcellentDungeonNodeGraph(_dungeon, _tiledView);
 
         if (_graph != null) _graph.Generate();
 

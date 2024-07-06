@@ -60,7 +60,7 @@ class GoodNodeGraphAgent : SampleNodeGraphAgent
         _target = nodeGraph.nodes[tempTarget][rnd];
 
         //Prevents the player from going back to the node it previously came from, with the exception of nodes that have only one connection
-        while (_target == lastVisited && connectionsCount > 1)
+        while (_target == lastVisited && connectionsCount > 1) // TODO: Make it a do-while loop
         {
             rnd = Utils.Random(0, connectionsCount);
             _target = nodeGraph.nodes[tempTarget][rnd];

@@ -28,7 +28,7 @@ class GoodDungeon : SufficientDungeon
         int minSize = rooms.Min(r => r.area.Width * r.area.Height);
 
         //Remove romes meeting the requirements
-        for (int i = 0; i < rooms.Count; ++i)
+        for (int i = 0; i < rooms.Count; ++i) // TODO: Make it a reversed for loop
         {
             if (rooms[i].area.Width * rooms[i].area.Height == maxSize
                 || rooms[i].area.Width * rooms[i].area.Height == minSize)

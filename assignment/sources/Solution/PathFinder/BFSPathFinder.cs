@@ -17,8 +17,6 @@ class BFSPathFinder : PathFinder
 
         todoQueue.Enqueue(_startNode);
 
-        //bool done = false;
-
         Node currentNode;
         while (todoQueue.Count > 0)
         {
@@ -26,7 +24,10 @@ class BFSPathFinder : PathFinder
             doneList.Add(currentNode);
 
             if (currentNode == _endNode)
+            {
                 GeneratePath(currentNode);
+                return;
+            }
             else
             {
                 foreach (var connectedNode in _nodeGraph.nodes[currentNode])
@@ -39,23 +40,28 @@ class BFSPathFinder : PathFinder
                 }
             }
         }
+
+        // Console.WriteLine("No possible path");
     }
 
-    void GeneratePath(Node lastNode)
+    void GeneratePath(Node endNode)
     {
-        Stack<Node> path = new Stack<Node>();
-        path.Push(lastNode);
+        Console.WriteLine("In");
 
-        Node tempNode = lastNode;
-        Node currentParent = lastNode.parent;
+        Stack<Node> path = new Stack<Node>();
+        path.Push(endNode);
+
+        Node tempNode = endNode;
+        Node currentParent = endNode.parent;
         while (currentParent != null)
         {
             path.Push(currentParent);
 
-            currentParent = currentParent.parent;
-
+            // Remove parent connections to prevent errors next time a path is being generated
             tempNode.parent = null;
             tempNode = currentParent;
+
+            currentParent = currentParent.parent;
         }
 
         for (int i = path.Count - 1; i >= 0; i--)
