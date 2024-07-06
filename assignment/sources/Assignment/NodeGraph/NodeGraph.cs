@@ -30,9 +30,9 @@ abstract class NodeGraph : Canvas
 
 	//some drawing settings
 	public int nodeSize { get; private set; }
+	public Brush defaultNodeColor => Brushes.CornflowerBlue;
 	private Pen _connectionPen = new Pen(Color.Black, 2);
 	private Pen _outlinePen = new Pen(Color.Black, 2.1f);
-	private Brush _defaultNodeColor = Brushes.CornflowerBlue;
 	private Brush _highlightedNodeColor = Brushes.Cyan;
 	
 	/** 
@@ -91,7 +91,7 @@ abstract class NodeGraph : Canvas
 
 	protected virtual void drawNodes()
 	{
-		foreach (Node node in nodes.Keys) drawNode(node, _defaultNodeColor);
+		foreach (Node node in nodes.Keys) drawNode(node, defaultNodeColor);
 	}
 
 	protected virtual void drawNode(Node pNode, Brush pColor)
@@ -166,7 +166,7 @@ abstract class NodeGraph : Canvas
 		//do mouse node hightlighting
 		if (newNodeUnderMouse != _nodeUnderMouse)
 		{
-			if (_nodeUnderMouse != null) drawNode(_nodeUnderMouse, _defaultNodeColor);
+			if (_nodeUnderMouse != null) drawNode(_nodeUnderMouse, defaultNodeColor);
 			_nodeUnderMouse = newNodeUnderMouse;
 			if (_nodeUnderMouse != null) drawNode(_nodeUnderMouse, _highlightedNodeColor);
 		}

@@ -1,15 +1,68 @@
 ﻿using GXPEngine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 class DijkstraPathFinder : SearchPathFinder
 {
+    List<Node> disabledNodes;
+
     public DijkstraPathFinder(NodeGraph pGraph) : base(pGraph)
     {
+        _nodeGraph.OnNodeRightClicked += AddNodeToDisabledNodes;
+
+        disabledNodes = new List<Node>();
     }
+
+    void AddNodeToDisabledNodes(Node node)
+    {
+        if (!disabledNodes.Contains(node))
+        {
+            disabledNodes.Add(node);
+            drawNode(node, Brushes.Black);
+        }
+        else
+        {
+            disabledNodes.Remove(node);
+            drawNode(node, _nodeGraph.defaultNodeColor);
+        }
+
+        Console.WriteLine(DungeonFullyConnected() ? "Yes" : "No");
+    }
+
+    bool DungeonFullyConnected()
+    {
+        Queue<Node> todoQueue = new Queue<Node>();
+        List<Node> doneList = new List<Node>();
+
+        todoQueue.Enqueue(_nodeGraph.nodes.First().Key);
+
+        Node currentNode;
+        while (todoQueue.Count > 0)
+        {
+            currentNode = todoQueue.Dequeue();
+            doneList.Add(currentNode);
+
+            foreach (var connectedNode in _nodeGraph.nodes[currentNode])
+            {
+                if (!disabledNodes.Contains(connectedNode) &&
+                    !todoQueue.Contains(connectedNode) &&
+                    !doneList.Contains(connectedNode))
+                {
+                    connectedNode.parent = currentNode;
+                    todoQueue.Enqueue(connectedNode);
+                }
+            }
+        }
+
+        return doneList.Count == _nodeGraph.nodes.Count - disabledNodes.Count;
+    }
+
+    public void ClearDisabledNodes()
+        => disabledNodes.Clear();
 
     protected override void generate()
     {
@@ -38,7 +91,8 @@ class DijkstraPathFinder : SearchPathFinder
             {
                 foreach (var connectedNode in _nodeGraph.nodes[currentNode])
                 {
-                    if (!doneList.Contains(connectedNode) &&
+                    if (!disabledNodes.Contains(connectedNode) &&
+                        !doneList.Contains(connectedNode) &&
                         !todoDict.Any(k => k.Value.Contains(connectedNode)))
                     {
                         connectedNode.parent = currentNode;
