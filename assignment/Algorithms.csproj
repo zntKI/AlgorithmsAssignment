@@ -153,6 +153,7 @@
     <Compile Include="sources\Solution\Dungeon\SufficientDungeon.cs" />
     <Compile Include="sources\Solution\NodeGraph\ExcellentDungeonNodeGraph.cs" />
     <Compile Include="sources\Solution\NodeGraph\SufficientDungeonNodeGraph.cs" />
+    <Compile Include="sources\Solution\PathFinding\AStarPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinding\BFSPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinding\DijkstraPathFinder.cs" />
     <Compile Include="sources\Solution\PathFinding\PathFindingAgent.cs" />

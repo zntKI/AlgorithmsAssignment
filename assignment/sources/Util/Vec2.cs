@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 /**
  * It's back. The basic basic Vec2 class from Physics Programming.
@@ -17,6 +18,12 @@ namespace GXPEngine
 		{
 			x = pX;
 			y = pY;
+		}
+
+		public Vec2 (Point location)
+		{
+			x = location.X;
+			y = location.Y;
 		}
 
 		public override string ToString ()

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 class DijkstraPathFinder : SearchPathFinder
 {
-    List<Node> disabledNodes;
+    protected List<Node> disabledNodes;
     bool isDungeonFullyConnected = true;
 
     public DijkstraPathFinder(NodeGraph pGraph) : base(pGraph)
@@ -112,9 +112,7 @@ class DijkstraPathFinder : SearchPathFinder
                     {
                         connectedNode.parent = currentNode;
 
-                        Vec2 location1 = new Vec2(connectedNode.location.X, connectedNode.location.Y);
-                        Vec2 location2 = new Vec2(currentNode.location.X, currentNode.location.Y);
-                        float distance = location1.DistanceTo(location2);
+                        int distance = DistanceBetweenNodes(connectedNode.location, currentNode.location);
                         int accumulatedDistance = kvp.Key + (int)distance;
                         if (!todoDict.ContainsKey(accumulatedDistance))
                         {
@@ -132,5 +130,12 @@ class DijkstraPathFinder : SearchPathFinder
         }
 
         // Console.WriteLine("No possible path");
+    }
+
+    protected int DistanceBetweenNodes(Point point1, Point point2)
+    {
+        Vec2 location1 = new Vec2(point1);
+        Vec2 location2 = new Vec2(point2);
+        return (int)location1.DistanceTo(location2);
     }
 }

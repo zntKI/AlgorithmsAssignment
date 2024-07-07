@@ -191,7 +191,8 @@ class AlgorithmsAssignment : Game
         //_pathFinder = new SamplePathFinder(_graph);
         //_pathFinder = new SufficientPathFinder(_graph);
         //_pathFinder = new BFSPathFinder(_graph);
-        _pathFinder = new DijkstraPathFinder(_graph);
+        //_pathFinder = new DijkstraPathFinder(_graph);
+        _pathFinder = new AStarPathFinder(_graph);
 
         //////////////////////////////////////////////////////////////////////////
         //Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding
