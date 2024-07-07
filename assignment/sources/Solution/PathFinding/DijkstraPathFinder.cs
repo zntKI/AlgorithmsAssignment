@@ -34,17 +34,11 @@ class DijkstraPathFinder : SearchPathFinder
         bool isFullyConnected = DungeonFullyConnected();
         if (!isDungeonFullyConnected && isFullyConnected)
         {
-            foreach (var dNode in disabledNodes)
-            {
-                drawNode(dNode, Brushes.Black);
-            }
+            drawNodes(disabledNodes, Brushes.Black);
         }
         else if (!isFullyConnected)
         {
-            foreach (var dNode in disabledNodes)
-            {
-                drawNode(dNode, Brushes.DarkRed);
-            }
+            drawNodes(disabledNodes, Brushes.DarkRed);
         }
 
         isDungeonFullyConnected = isFullyConnected;
@@ -100,6 +94,8 @@ class DijkstraPathFinder : SearchPathFinder
 
             if (currentNode == _endNode)
             {
+                DrawNodeCoverage(doneList, todoDict.Values.SelectMany(list => list).ToList());
+
                 GeneratePath(currentNode);
 
                 disabledNodes.Clear();

@@ -25,6 +25,8 @@ class BFSPathFinder : SearchPathFinder
 
             if (currentNode == _endNode)
             {
+                DrawNodeCoverage(doneList, todoQueue);
+
                 GeneratePath(currentNode);
                 return;
             }

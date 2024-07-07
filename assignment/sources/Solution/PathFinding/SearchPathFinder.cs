@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,5 +33,11 @@ abstract class SearchPathFinder : PathFinder
         {
             _lastCalculatedPath.Enqueue(path.Pop());
         }
+    }
+
+    protected virtual void DrawNodeCoverage(IEnumerable<Node> doneList, IEnumerable<Node> leftTodoList)
+    {
+        drawNodes(doneList, Brushes.DarkBlue);
+        drawNodes(leftTodoList, Brushes.DarkOrange);
     }
 }

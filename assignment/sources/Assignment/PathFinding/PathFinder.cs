@@ -36,8 +36,8 @@ abstract class PathFinder : Canvas
 	public PathFinder (NodeGraph pGraph) : base (pGraph.width, pGraph.height)
 	{
 		_nodeGraph = pGraph;
-		_nodeGraph.OnNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };
-		_nodeGraph.OnNodeShiftRightClicked += (node) => { _endNode = node; draw(); };
+		//_nodeGraph.OnNodeShiftLeftClicked += (node) => { _startNode = node; draw(); };
+		//_nodeGraph.OnNodeShiftRightClicked += (node) => { _endNode = node; draw(); };
 
 		_lastCalculatedPath = new Queue<Node>();
 
@@ -66,8 +66,9 @@ abstract class PathFinder : Canvas
 			Console.WriteLine("Please specify start and end node before trying to generate a path.");
 		}
 		else
-		{
-			generate();
+        {
+            graphics.Clear(Color.Transparent);
+            generate();
 		}
 
 		draw();
@@ -92,7 +93,7 @@ abstract class PathFinder : Canvas
 	protected virtual void draw()
 	{
 		//to keep things simple we redraw all debug info every frame
-		graphics.Clear(Color.Transparent);
+		//graphics.Clear(Color.Transparent); // MOVED before calling 'generate' method to clearly display node coverage
 
 		//draw path if we have one
 		if (_lastCalculatedPath != null) drawPath();
