@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 class DijkstraPathFinder : SearchPathFinder
 {
     List<Node> disabledNodes;
+    bool isDungeonFullyConnected = true;
 
     public DijkstraPathFinder(NodeGraph pGraph) : base(pGraph)
     {
@@ -30,9 +31,28 @@ class DijkstraPathFinder : SearchPathFinder
             drawNode(node, _nodeGraph.defaultNodeColor);
         }
 
-        Console.WriteLine(DungeonFullyConnected() ? "Yes" : "No");
+        bool isFullyConnected = DungeonFullyConnected();
+        if (!isDungeonFullyConnected && isFullyConnected)
+        {
+            foreach (var dNode in disabledNodes)
+            {
+                drawNode(dNode, Brushes.Black);
+            }
+        }
+        else if (!isFullyConnected)
+        {
+            foreach (var dNode in disabledNodes)
+            {
+                drawNode(dNode, Brushes.DarkRed);
+            }
+        }
+
+        isDungeonFullyConnected = isFullyConnected;
     }
 
+    /// <summary>
+    /// Checks if the dungeon is fully connected by using BFS
+    /// </summary>
     bool DungeonFullyConnected()
     {
         Queue<Node> todoQueue = new Queue<Node>();
@@ -52,7 +72,6 @@ class DijkstraPathFinder : SearchPathFinder
                     !todoQueue.Contains(connectedNode) &&
                     !doneList.Contains(connectedNode))
                 {
-                    connectedNode.parent = currentNode;
                     todoQueue.Enqueue(connectedNode);
                 }
             }
@@ -60,9 +79,6 @@ class DijkstraPathFinder : SearchPathFinder
 
         return doneList.Count == _nodeGraph.nodes.Count - disabledNodes.Count;
     }
-
-    public void ClearDisabledNodes()
-        => disabledNodes.Clear();
 
     protected override void generate()
     {
@@ -85,6 +101,9 @@ class DijkstraPathFinder : SearchPathFinder
             if (currentNode == _endNode)
             {
                 GeneratePath(currentNode);
+
+                disabledNodes.Clear();
+
                 return;
             }
             else

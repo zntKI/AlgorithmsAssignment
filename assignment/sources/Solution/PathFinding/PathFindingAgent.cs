@@ -47,10 +47,6 @@ class PathFindingAgent : SampleNodeGraphAgent
             else
             {
                 _target = null;
-
-                if (_pathFinder is DijkstraPathFinder)
-                    ((DijkstraPathFinder)_pathFinder).ClearDisabledNodes();
-
                 _pathFinder.Clear();
             }
         }
