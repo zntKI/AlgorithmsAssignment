@@ -35,7 +35,7 @@ class Node
 
 		//use an autoincrementing id as label
 		id = ""+lastID++;
-		System.Console.WriteLine(id);
+		//System.Console.WriteLine(id);
 	}
 
 	public static void ResetId()
@@ -46,7 +46,7 @@ class Node
 
     public override string ToString()
 	{
-		return id;
+		return $"{id} - X: {location.X} Y: {location.Y}";
 	}
 }
 

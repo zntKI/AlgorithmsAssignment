@@ -23,6 +23,11 @@ class AStarPathFinder : DijkstraPathFinder
             {
                 { (distanceStartToEndNode, 0), new List<Node>() { _startNode } }
             });
+        {
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("=============================================================================");
+            //Console.ForegroundColor = ConsoleColor.White;
+        }
 
         Node currentNode;
         while (todoDict.Count > 0)
@@ -34,6 +39,32 @@ class AStarPathFinder : DijkstraPathFinder
 
             var innerKvp = kvp.Value.First();
             currentNode = innerKvp.Value[0];
+
+            {
+                //Console.WriteLine("\n\n=============================================================================\n\n");
+
+                //Console.WriteLine($"Current smallest combined distance: {kvp.Key}");
+
+                //Console.WriteLine($"Current node:");
+                //Console.WriteLine($"\tNode: {currentNode}");
+                //Console.WriteLine($"\tTo-End-distance: {innerKvp.Key.Item1}, From-Start-distance: {innerKvp.Key.Item2}");
+
+                //{
+                //    Console.WriteLine("\n-----------------------------------------------------------------------------\n");
+                //    foreach (var k in todoDict)
+                //    {
+                //        Console.WriteLine($"Combined distance: {k.Key}");
+                //        foreach (var ki in k.Value)
+                //        {
+                //            Console.WriteLine($"\tTo-End-distance: {ki.Key.Item1}, From-Start-distance: {ki.Key.Item2}");
+                //            foreach (var n in ki.Value)
+                //            {
+                //                Console.WriteLine($"\t\tNode: {n}");
+                //            }
+                //        }
+                //    }
+                //}
+            }
 
             todoDict[kvp.Key][innerKvp.Key].Remove(currentNode);
             doneList.Add(currentNode);
