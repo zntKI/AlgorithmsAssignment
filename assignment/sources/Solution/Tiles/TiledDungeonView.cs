@@ -16,8 +16,6 @@ class TiledDungeonView : SampleTiledView
 
     protected override void generate()
     {
-        //SetTileType(i % columns, i / columns, Utils.Random(0, 2) == 1 ? TileType.GROUND : TileType.WALL);
-
         //Loop through each room
         foreach (var room in dungeon.rooms)
         {
@@ -33,19 +31,14 @@ class TiledDungeonView : SampleTiledView
                     || roomCol == 0 || roomCol == room.area.Width - 1;
 
                 //Relative to the game
-                int col = room.area.Left + roomCol;
-                int row = room.area.Top + roomRow;
-
-                int tileIndex = row * columns + col;
-                SetTileType(tileIndex % columns, tileIndex / columns, tileTypeIsWall ? TileType.WALL : TileType.GROUND);
+                SetTileType(room.area.Left + roomCol, room.area.Top + roomRow, tileTypeIsWall ? TileType.WALL : TileType.GROUND);
             }
         }
 
         //Loop through each door
         foreach (var door in dungeon.doors)
         {
-            int tileIndex = door.location.Y * columns + door.location.X;
-            SetTileType(tileIndex % columns, tileIndex / columns, TileType.GROUND);
+            SetTileType(door.location.X, door.location.Y, TileType.GROUND);
         }
     }
 }

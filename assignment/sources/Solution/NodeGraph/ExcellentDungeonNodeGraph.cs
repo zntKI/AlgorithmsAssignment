@@ -76,7 +76,7 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
     /// <summary>
     /// Recursive function which generates and connects nodes
     /// </summary>
-    void GenerateNode(int index, Node previousNode)
+    void GenerateNode(int index, Node previousNode) // TODO: Do it with BFS instead
     {
         int x = index % _tiledView.columns;
         int y = index / _tiledView.columns;
@@ -86,7 +86,7 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
         Node nodeToConnectWith;
         if (!tileType.walkable)
             return;
-        else if (TryGetNodeAtPosition(pos, out nodeToConnectWith))
+        else if (NodeExistsAtPosition(pos, out nodeToConnectWith))
         {
             nodes[previousNode].Add(nodeToConnectWith);
             return;
@@ -115,9 +115,9 @@ class ExcellentDungeonNodeGraph : SampleDungeonNodeGraph
     /// Checks if a node already exists on the given pos
     /// </summary>
     /// <param name="node">The node if there was such</param>
-    bool TryGetNodeAtPosition(Point positionToCheck, out Node node)
+    bool NodeExistsAtPosition(Point positionToCheck, out Node node)
     {
-        node = nodes.Keys.FirstOrDefault(n => n.location == positionToCheck);
+        node = nodes.Keys.FirstOrDefault(n => n.location == positionToCheck); // TODO: use a 2D array instead of dictionary for the node data structure
         return node != null ? true : false;
     }
 }

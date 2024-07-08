@@ -25,14 +25,13 @@ class GoodDungeon : SufficientDungeon
         int maxSize = rooms.Max(r => r.area.Width * r.area.Height);
         int minSize = rooms.Min(r => r.area.Width * r.area.Height);
 
-        //Remove romes meeting the requirements
-        for (int i = 0; i < rooms.Count; ++i) // TODO: Make it a reversed for loop
+        //Remove rooms meeting the requirements
+        for (int i = rooms.Count - 1; i >= 0; i--)
         {
-            if (rooms[i].area.Width * rooms[i].area.Height == maxSize
-                || rooms[i].area.Width * rooms[i].area.Height == minSize)
+            int roomArea = rooms[i].area.Width * rooms[i].area.Height;
+            if (roomArea == maxSize || roomArea == minSize)
             {
                 rooms.RemoveAt(i);
-                --i;
             }
         }
     }
@@ -41,14 +40,7 @@ class GoodDungeon : SufficientDungeon
     {
         foreach (var room in rooms)
         {
-            int countDoors = 0;
-            foreach (var door in doors)
-            {
-                if (room == door.roomA || room == door.roomB)
-                {
-                    ++countDoors;
-                }
-            }
+            int countDoors = doors.Count(d => d.roomA == room || d.roomB == room);
             if (countDoors >= 4)
                 room.fillColor = new SolidBrush(Color.Purple);
             else

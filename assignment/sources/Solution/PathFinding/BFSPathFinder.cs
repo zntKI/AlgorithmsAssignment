@@ -13,7 +13,7 @@ class BFSPathFinder : SearchPathFinder
     protected override void generate()
     {
         Queue<Node> todoQueue = new Queue<Node>();
-        List<Node> doneList = new List<Node>();
+        HashSet<Node> doneList = new HashSet<Node>();
 
         todoQueue.Enqueue(_startNode);
 
@@ -42,7 +42,5 @@ class BFSPathFinder : SearchPathFinder
                 }
             }
         }
-
-        // Console.WriteLine("No possible path");
     }
 }

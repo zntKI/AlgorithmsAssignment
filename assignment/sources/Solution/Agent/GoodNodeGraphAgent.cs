@@ -56,15 +56,12 @@ class GoodNodeGraphAgent : SampleNodeGraphAgent
         Node tempTarget = _target;
 
         int connectionsCount = nodeGraph.nodes[_target].Count;
-        int rnd = Utils.Random(0, connectionsCount);
-        _target = nodeGraph.nodes[tempTarget][rnd];
-
-        //Prevents the player from going back to the node it previously came from, with the exception of nodes that have only one connection
-        while (_target == lastVisited && connectionsCount > 1) // TODO: Make it a do-while loop
+        do
         {
-            rnd = Utils.Random(0, connectionsCount);
+            int rnd = Utils.Random(0, connectionsCount);
             _target = nodeGraph.nodes[tempTarget][rnd];
         }
+        while (_target == lastVisited && connectionsCount > 1); // Prevents the player from going back to the node it previously came from, with the exception of nodes that have only one connection
 
         lastVisited = tempTarget;
     }
