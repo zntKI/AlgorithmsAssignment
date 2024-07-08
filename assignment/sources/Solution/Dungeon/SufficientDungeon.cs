@@ -150,7 +150,7 @@ class SufficientDungeon : Dungeon
         };
     }
 
-    protected void GenerateDoors()
+    protected virtual void GenerateDoors()
     {
         //foreach (var room in rooms)
         //{
@@ -201,7 +201,7 @@ class SufficientDungeon : Dungeon
     /// Check if the otherRoom is neighbouring to room
     /// </summary>
     /// <returns>Whether the rooms are neighbouring</returns>
-    (bool, bool) CheckForNeighbouring(Room room, Room otherRoom)
+    protected virtual (bool, bool) CheckForNeighbouring(Room room, Room otherRoom)
     {
         float difX = Mathf.Abs((room.area.X + room.area.Width / 2f) - (otherRoom.area.X + otherRoom.area.Width / 2f));//Floats because of the possible odd sizes of the rooms
         float difY = Mathf.Abs((room.area.Y + room.area.Height / 2f) - (otherRoom.area.Y + otherRoom.area.Height / 2f));
@@ -218,7 +218,7 @@ class SufficientDungeon : Dungeon
     /// <summary>
     /// Checks if there is already a door between the given rooms
     /// </summary>
-    bool CheckForDoorExists(Room room, Room otherRoom)
+    protected bool CheckForDoorExists(Room room, Room otherRoom)
     {
         bool doorExists = false;
         foreach (var doorCheck in doors)
@@ -237,7 +237,7 @@ class SufficientDungeon : Dungeon
     /// <summary>
     /// Picks a position for the Door and creates it
     /// </summary>
-    Door GenerateDoor(Room room, Room otherRoom, bool isNeighbouringX)
+    protected virtual Door GenerateDoor(Room room, Room otherRoom, bool isNeighbouringX)
     {
         int overlapStart = 0;
         int overlapEnd = 0;
