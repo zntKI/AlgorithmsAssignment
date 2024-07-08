@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 class DijkstraPathFinder : SearchPathFinder
 {
-    protected List<Node> disabledNodes;
+    protected HashSet<Node> disabledNodes;
     bool isDungeonFullyConnected = true;
 
     public DijkstraPathFinder(NodeGraph pGraph) : base(pGraph)
     {
         _nodeGraph.OnNodeRightClicked += AddNodeToDisabledNodes;
 
-        disabledNodes = new List<Node>();
+        disabledNodes = new HashSet<Node>();
     }
 
     void AddNodeToDisabledNodes(Node node)
@@ -50,7 +50,7 @@ class DijkstraPathFinder : SearchPathFinder
     bool DungeonFullyConnected()
     {
         Queue<Node> todoQueue = new Queue<Node>();
-        List<Node> doneList = new List<Node>();
+        HashSet<Node> doneList = new HashSet<Node>();
 
         todoQueue.Enqueue(_nodeGraph.nodes.First().Key);
 
@@ -77,7 +77,7 @@ class DijkstraPathFinder : SearchPathFinder
     protected override void generate()
     {
         SortedDictionary<int, List<Node>> todoDict = new SortedDictionary<int, List<Node>>();
-        List<Node> doneList = new List<Node>();
+        HashSet<Node> doneList = new HashSet<Node>();
 
         todoDict.Add(0, new List<Node>() { _startNode });
 
@@ -128,14 +128,12 @@ class DijkstraPathFinder : SearchPathFinder
                 }
             }
         }
-
-        // Console.WriteLine("No possible path");
     }
 
     protected int DistanceBetweenNodes(Point point1, Point point2)
     {
         Vec2 location1 = new Vec2(point1);
         Vec2 location2 = new Vec2(point2);
-        return (int)location1.DistanceTo(location2);
+        return Mathf.Round(location1.DistanceTo(location2));
     }
 }

@@ -15,7 +15,7 @@ class AStarPathFinder : DijkstraPathFinder
     protected override void generate()
     {
         SortedDictionary<int, SortedDictionary<(int, int), List<Node>>> todoDict = new SortedDictionary<int, SortedDictionary<(int, int), List<Node>>>();
-        List<Node> doneList = new List<Node>();
+        HashSet<Node> doneList = new HashSet<Node>();
 
         int distanceStartToEndNode = DistanceBetweenNodes(_startNode.location, _endNode.location);
         todoDict.Add(distanceStartToEndNode + 0,
@@ -118,7 +118,5 @@ class AStarPathFinder : DijkstraPathFinder
 
             }
         }
-
-        // Console.WriteLine("No possible path");
     }
 }

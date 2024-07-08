@@ -148,7 +148,6 @@
     <Compile Include="sources\Assignment\PathFinding\PathFinder.cs" />
     <Compile Include="sources\Solution\Agent\GoodNodeGraphAgent.cs" />
     <Compile Include="sources\Solution\Agent\SufficientNodeGraphAgent.cs" />
-    <Compile Include="sources\Solution\Dungeon\ExcellentDungeon.cs" />
     <Compile Include="sources\Solution\Dungeon\GoodDungeon.cs" />
     <Compile Include="sources\Solution\Dungeon\SufficientDungeon.cs" />
     <Compile Include="sources\Solution\NodeGraph\ExcellentDungeonNodeGraph.cs" />

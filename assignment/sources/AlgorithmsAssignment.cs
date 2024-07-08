@@ -93,7 +93,6 @@ class AlgorithmsAssignment : Game
         //_dungeon = new SampleDungeon(size);
         _dungeon = new SufficientDungeon(size);
         //_dungeon = new GoodDungeon(size);
-        //_dungeon = new ExcellentDungeon(size);
 
         /////////////////////////////////
         //Assignment 1.2 Good (optional)
@@ -191,8 +190,8 @@ class AlgorithmsAssignment : Game
         //_pathFinder = new SamplePathFinder(_graph);
         //_pathFinder = new SufficientPathFinder(_graph);
         //_pathFinder = new BFSPathFinder(_graph);
-        //_pathFinder = new DijkstraPathFinder(_graph);
-        _pathFinder = new AStarPathFinder(_graph);
+        _pathFinder = new DijkstraPathFinder(_graph);
+        //_pathFinder = new AStarPathFinder(_graph);
 
         //////////////////////////////////////////////////////////////////////////
         //Assignment 3.1 Sufficient (Mandatory) - BreadthFirst Pathfinding

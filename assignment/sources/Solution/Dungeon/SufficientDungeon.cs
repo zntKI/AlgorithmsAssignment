@@ -9,63 +9,39 @@ using System.Threading.Tasks;
 
 class SufficientDungeon : Dungeon
 {
-    protected List<Room> dividedRooms;
-
-    protected List<Room> currentRoomsToDivide;
-    protected List<Room> newRoomsToDivide;
-
     public SufficientDungeon(Size pSize) : base(pSize)
     {
-        dividedRooms = new List<Room>();
-        currentRoomsToDivide = new List<Room>() { new Room(new Rectangle(0, 0, size.Width, size.Height)) };
-        newRoomsToDivide = new List<Room>();
     }
 
     protected override void generate(int pMinimumRoomSize)
     {
-        SetListCapacity(pMinimumRoomSize);
-
         GenerateRooms(pMinimumRoomSize);
         GenerateDoors();
     }
 
-    protected void SetListCapacity(int pMinimumRoomSize)
-    {
-        int capacity =  CalculateCapacity(pMinimumRoomSize);
-
-        dividedRooms.Capacity = capacity;
-        currentRoomsToDivide.Capacity = capacity;
-        newRoomsToDivide.Capacity = capacity;
-    }
-
     protected void GenerateRooms(int pMinimumRoomSize)
     {
+        Queue<Room> roomsToDivide = new Queue<Room>();
+        roomsToDivide.Enqueue(new Room(new Rectangle(0, 0, size.Width, size.Height)));
+
         //loop until there are no rooms that can be furher divided
-        while (true)
+        while (roomsToDivide.Count > 0)
         {
-            foreach (var currentRoom in currentRoomsToDivide)
+            Room currentRoom = roomsToDivide.Dequeue();
+
+            //Randomly pick which way to try to divide first - horizontally or vertically
+            bool shouldDivideVertically = Utils.Random(0, 2) == 1;
+
+            if (TryDivide(currentRoom, shouldDivideVertically, pMinimumRoomSize, out (Room, Room) newRooms))
             {
-                //Randomly pick which way to try to divide first - horizontally or vertically
-                bool shouldDivideVertically = Utils.Random(0, 2) == 1;
-
-                //Try to divide using the given orientation
-                bool isFirstOrientationPossible = TryDivide(currentRoom, shouldDivideVertically, pMinimumRoomSize);
-                if (!isFirstOrientationPossible) //Try dividing by the other orientation if the division by the first was unsuccessful
-                {
-                    TryDivide(currentRoom, !shouldDivideVertically, pMinimumRoomSize);
-                }
+                roomsToDivide.Enqueue(newRooms.Item1);
+                roomsToDivide.Enqueue(newRooms.Item2);
             }
-
-            //Switch room list with the newly formed rooms
-            currentRoomsToDivide.Clear();
-            currentRoomsToDivide.AddRange(newRoomsToDivide);
-            newRoomsToDivide.Clear();
-
-            if (currentRoomsToDivide.Count == 0)
-                break;
+            else
+            {
+                rooms.Add(currentRoom);
+            }
         }
-
-        rooms.AddRange(dividedRooms);
     }
 
     /// <summary>
@@ -73,34 +49,25 @@ class SufficientDungeon : Dungeon
     /// </summary>
     /// <param name="room">The room to be divided in two</param>
     /// <returns>If the division was possible</returns>
-    bool TryDivide(Room room, bool shouldDivideVertically, int pMinimumRoomSize)
+    bool TryDivide(Room room, bool shouldDivideVertically, int pMinimumRoomSize, out (Room, Room) newRooms)
     {
+        bool verticalDivisionCondition = room.area.Width >= pMinimumRoomSize * 2 + 1; // '+ 1' For the overlaping of rooms, otherwise '+ 2'
+        bool horizontalDivisionCondition = room.area.Height >= pMinimumRoomSize * 2 + 1; // '+ 1' For the overlaping of rooms, otherwise '+ 2'
+
         //Checks if it is possible to divide in the given orientation
-        bool isDividingImpossible =
-            (shouldDivideVertically && room.area.Width < pMinimumRoomSize * 2 + 1) // '+ 1' For the overlaping of rooms, otherwise '+ 2'
-            || (!shouldDivideVertically && room.area.Height < pMinimumRoomSize * 2 + 1);
-
-        if (isDividingImpossible)
-            return false;
-
-        Room[] newRooms = Divide(room, shouldDivideVertically, pMinimumRoomSize);
-
-        //Check if any rooms are further dividable
-        foreach (var roomToCheck in newRooms)
+        bool isDividingPossible = shouldDivideVertically ? verticalDivisionCondition : horizontalDivisionCondition;
+        if (!isDividingPossible)
         {
-            bool isFurtherDividingImpossible =
-                roomToCheck.area.Width < pMinimumRoomSize * 2 + 1 // '+ 1' For the overlaping of rooms, otherwise '+ 2'
-                && roomToCheck.area.Height < pMinimumRoomSize * 2 + 1;
-            if (isFurtherDividingImpossible)
+            shouldDivideVertically = !shouldDivideVertically;
+            isDividingPossible = shouldDivideVertically ? verticalDivisionCondition : horizontalDivisionCondition; //Try dividing by the other orientation if the division by the first was unsuccessful
+            if (!isDividingPossible)
             {
-                dividedRooms.Add(roomToCheck);
-            }
-            else
-            {
-                newRoomsToDivide.Add(roomToCheck);
+                newRooms = (null, null);
+                return false;
             }
         }
 
+        newRooms = Divide(room, shouldDivideVertically, pMinimumRoomSize);
         return true;
     }
 
@@ -109,7 +76,7 @@ class SufficientDungeon : Dungeon
     /// </summary>
     /// <param name="room">The room to be divided in two</param>
     /// <returns>The newly formed rooms</returns>
-    Room[] Divide(Room room, bool shouldDivideVertically, int pMinimumRoomSize)
+    (Room, Room) Divide(Room room, bool shouldDivideVertically, int pMinimumRoomSize)
     {
         int roomSize = shouldDivideVertically ? room.area.Width : room.area.Height;
 
@@ -124,75 +91,38 @@ class SufficientDungeon : Dungeon
         }
         else
         {
-            room1Size = Utils.Random(0, roomSize + 1); // '+ 1' For the overlaping of rooms, otherwise '+ 0'
-            room2Size = roomSize + 1 - room1Size;
             //Generate random size until it meets the requirements
-            while (true)
+            do
             {
-                if ((room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize) || (room1Size + room2Size - 1 != roomSize)) // For the overlaping of rooms, otherwise 'room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize'
-                {
-                    room1Size = Utils.Random(0, roomSize + 1); // '+ 1' For the overlaping of rooms, otherwise '+ 0'
-                    room2Size = roomSize + 1 - room1Size;
-                }
-                else
-                    break;
+                room1Size = Utils.Random(0, roomSize + 1); // '+ 1' For the overlaping of rooms, otherwise '+ 0'
+                room2Size = roomSize + 1 - room1Size;
             }
+            while ((room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize) || (room1Size + room2Size - 1 != roomSize)); // For the overlaping of rooms, otherwise 'room1Size <= pMinimumRoomSize || room2Size <= pMinimumRoomSize'
         }
 
-        return new Room[]
-        {
+        return
+        (
             shouldDivideVertically
                 ? new Room(new Rectangle(room.area.X, room.area.Y, room1Size, room.area.Height))
                 : new Room(new Rectangle(room.area.X, room.area.Y, room.area.Width, room1Size)),
             shouldDivideVertically
                 ? new Room(new Rectangle(room.area.X + room1Size - 1, room.area.Y, room2Size, room.area.Height))
                 : new Room(new Rectangle(room.area.X, room.area.Y + room1Size - 1, room.area.Width, room2Size))
-        };
+        );
     }
 
-    protected virtual void GenerateDoors()
+    protected void GenerateDoors()
     {
-        //foreach (var room in rooms)
-        //{
-        //    foreach (var otherRoom in rooms)
-        //    {
-        //        if (otherRoom == room)
-        //            continue;
-
-        //        //Skip room if not neighbouring
-        //        (bool isNeighbouringX, bool isNeighbouringY) = CheckForNeighbouring(room, otherRoom);
-        //        if (!isNeighbouringX && !isNeighbouringY)
-        //            continue;
-
-        //        //Checks if there is already a door between the given rooms
-        //        if (CheckForDoorExists(room, otherRoom))
-        //            continue;
-
-
-        //        Door door = GenerateDoor(room, otherRoom, isNeighbouringX);
-
-        //        doors.Add(door);
-        //    }
-        //}
-
         //Optimized variant:
         for (int i = 0; i < rooms.Count; i++)
         {
             for (int j = i + 1; j < rooms.Count; j++)
             {
-                //Skip room if not neighbouring
-                (bool isNeighbouringX, bool isNeighbouringY) = CheckForNeighbouring(rooms[i], rooms[j]);
-                if (!isNeighbouringX && !isNeighbouringY)
-                    continue;
-
-                //Checks if there is already a door between the given rooms
-                //if (CheckForDoorExists(rooms[i], rooms[j])) // NO need for that check anymore since the potential rooms have been skipped due to 'j = i + 1'
-                //    continue;
-
-
-                Door door = GenerateDoor(rooms[i], rooms[j], isNeighbouringX);
-
-                doors.Add(door);
+                if (IsRoomNeighbouring(rooms[i], rooms[j], out bool isNeighbouringX))
+                {
+                    Door door = GenerateDoor(rooms[i], rooms[j], isNeighbouringX);
+                    doors.Add(door);
+                }
             }
         }
     }
@@ -200,8 +130,7 @@ class SufficientDungeon : Dungeon
     /// <summary>
     /// Check if the otherRoom is neighbouring to room
     /// </summary>
-    /// <returns>Whether the rooms are neighbouring</returns>
-    protected virtual (bool, bool) CheckForNeighbouring(Room room, Room otherRoom)
+    bool IsRoomNeighbouring(Room room, Room otherRoom, out bool isNeighbouringToX)
     {
         float difX = Mathf.Abs((room.area.X + room.area.Width / 2f) - (otherRoom.area.X + otherRoom.area.Width / 2f));//Floats because of the possible odd sizes of the rooms
         float difY = Mathf.Abs((room.area.Y + room.area.Height / 2f) - (otherRoom.area.Y + otherRoom.area.Height / 2f));
@@ -212,32 +141,14 @@ class SufficientDungeon : Dungeon
             difY == room.area.Height / 2f + otherRoom.area.Height / 2f - 1 //Due to room overlapping
             && otherRoom.area.X < room.area.X + room.area.Width - 2 && room.area.X < otherRoom.area.X + otherRoom.area.Width - 2; // '- 2' -> In order to prevent doors spawning on corners or borders
 
-        return (isNeighbouringX, isNeighbouringY);
-    }
-
-    /// <summary>
-    /// Checks if there is already a door between the given rooms
-    /// </summary>
-    protected bool CheckForDoorExists(Room room, Room otherRoom)
-    {
-        bool doorExists = false;
-        foreach (var doorCheck in doors)
-        {
-            if ((doorCheck.roomA == room && doorCheck.roomB == otherRoom)
-                || (doorCheck.roomA == otherRoom && doorCheck.roomB == room))
-            {
-                doorExists = true;
-                break;
-            }
-        }
-
-        return doorExists;
+        isNeighbouringToX = isNeighbouringX;
+        return isNeighbouringX || isNeighbouringY;
     }
 
     /// <summary>
     /// Picks a position for the Door and creates it
     /// </summary>
-    protected virtual Door GenerateDoor(Room room, Room otherRoom, bool isNeighbouringX)
+    Door GenerateDoor(Room room, Room otherRoom, bool isNeighbouringX)
     {
         int overlapStart = 0;
         int overlapEnd = 0;
