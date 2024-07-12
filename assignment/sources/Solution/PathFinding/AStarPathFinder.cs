@@ -14,6 +14,9 @@ class AStarPathFinder : DijkstraPathFinder
 
     protected override void generate()
     {
+        //*Combined distance*
+        //      (*To-End-distance*, *From-Start-distance*)
+        //          Nodes
         SortedDictionary<int, SortedDictionary<(int, int), List<Node>>> todoDict = new SortedDictionary<int, SortedDictionary<(int, int), List<Node>>>();
         HashSet<Node> doneList = new HashSet<Node>();
 
@@ -23,6 +26,7 @@ class AStarPathFinder : DijkstraPathFinder
             {
                 { (distanceStartToEndNode, 0), new List<Node>() { _startNode } }
             });
+
         {
             //Console.ForegroundColor = ConsoleColor.Green;
             //Console.WriteLine("=============================================================================");
@@ -32,11 +36,13 @@ class AStarPathFinder : DijkstraPathFinder
         Node currentNode;
         while (todoDict.Count > 0)
         {
+            // Gets the shortest combined distance
             var kvp = todoDict.First();
 
             if (kvp.Value.Count == 0)
                 throw new InvalidOperationException("Dictionary element with no nodes should have been deleted!");
 
+            // Gets the collection with shortest *To-End-distance* (due to possible equal combined distances)
             var innerKvp = kvp.Value.First();
             currentNode = innerKvp.Value[0];
 
@@ -107,6 +113,7 @@ class AStarPathFinder : DijkstraPathFinder
                     }
                 }
 
+                // Clear if no elements left
                 if (todoDict[kvp.Key][innerKvp.Key].Count == 0)
                 {
                     todoDict[kvp.Key].Remove(innerKvp.Key);
