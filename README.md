@@ -9,7 +9,7 @@ A project I worked on during my Algorithms course, which showcases various algor
 
 ## Overview
 
-Throughout the course, we covered many fundamental algorithms and techiniques for solving common programming problems - from generating a dungeon with Binary Space Partitioning (BSP) to finding shorthest paths with the A* pathfinding algorithm.
+Throughout the course, we covered many fundamental algorithms and techiniques for solving common programming problems - from generating a dungeon with Binary Space Partitioning (BSP) to finding shorthest paths with the A* pathfinding algorithm. All done utilizing the [GXP 2D Game Engine](https://github.com/zntKI/AlgorithmsAssignment/tree/main/gxpengine) - a code-based small engine designed and developed by the teachers to introduce students to how a game engine may opperate.
 
 ## Features
 
